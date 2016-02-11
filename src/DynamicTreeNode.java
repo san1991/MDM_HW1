@@ -7,10 +7,10 @@ public class DynamicTreeNode {
     public List<DynamicTreeNode> children;
     public HashMap<Integer, Object> database;
 
-    private int name;
+    private String name;
 
 
-    public DynamicTreeNode(int name){
+    public DynamicTreeNode(String name){
         this.name=name;
         this.children=new ArrayList<DynamicTreeNode>();
     }
@@ -24,8 +24,8 @@ public class DynamicTreeNode {
         this.parent=parent;
     }
 
-    public int getName(){return this.name;}
-
+    public String getName(){return this.name;}
+    public void printName(){System.out.println(this.name);}
     public void addUsers(int phoneNumber, int name){
         this.database.put(phoneNumber, name);
     }
