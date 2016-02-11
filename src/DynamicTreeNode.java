@@ -5,7 +5,7 @@ import java.util.*;
 public class DynamicTreeNode {
     public DynamicTreeNode parent;
     public List<DynamicTreeNode> children;
-    public HashMap<Integer, Object> database;
+    public HashMap<String, Object> database;
 
     private String name;
 
@@ -13,6 +13,7 @@ public class DynamicTreeNode {
     public DynamicTreeNode(String name){
         this.name=name;
         this.children=new ArrayList<DynamicTreeNode>();
+        this.database=new HashMap<String, Object>();
     }
 
     public void addChild(DynamicTreeNode child){
@@ -26,7 +27,7 @@ public class DynamicTreeNode {
 
     public String getName(){return this.name;}
     public void printName(){System.out.println(this.name);}
-    public void addUsers(int phoneNumber, int name){
-        this.database.put(phoneNumber, name);
+    public void addUsers(String phoneNumber, Object node){
+        this.database.put(phoneNumber, node);
     }
 }
