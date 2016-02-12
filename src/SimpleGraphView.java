@@ -2,9 +2,11 @@ import edu.uci.ics.jung.algorithms.layout.CircleLayout;
 import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.algorithms.layout.TreeLayout;
 import edu.uci.ics.jung.graph.DelegateTree;
+import edu.uci.ics.jung.graph.Forest;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseGraph;
 import edu.uci.ics.jung.visualization.BasicVisualizationServer;
+import edu.uci.ics.jung.visualization.decorators.EdgeShape;
 import org.apache.commons.collections15.Transformer;
 
 import javax.swing.*;
@@ -26,16 +28,19 @@ public class SimpleGraphView {
         g.addChild("A-B2", 1, 3);
         g.addChild("B1-C1",2,4);
         g.addChild("B1-C2",2,5);
-        
+        g.addEdge("test",2,6);
+
+
 
         // Layout implements the graph drawing logic
         //Layout<Integer, String> layout = new CircleLayout<Integer, String>(g);
+
         TreeLayout<Integer, String> layout = new TreeLayout<Integer, String>(g,150,150);
 //        layout.setSize(new Dimension(300,300));
 
         // VisualizationServer actually displays the graph
         BasicVisualizationServer<Integer,String> vv = new BasicVisualizationServer<Integer,String>(layout);
-        vv.setPreferredSize(new Dimension(600,800)); //Sets the viewing area size
+        vv.setPreferredSize(new Dimension(1500,800)); //Sets the viewing area size
 
         // Transformer maps the vertex number to a vertex property
         Transformer<Integer,Paint> vertexColor = new Transformer<Integer,Paint>() {
@@ -54,7 +59,7 @@ public class SimpleGraphView {
         };
         vv.getRenderContext().setVertexFillPaintTransformer(vertexColor);
         vv.getRenderContext().setVertexShapeTransformer(vertexSize);
-
+        vv.getRenderContext().setEdgeShapeTransformer(new EdgeShape.Line());
 
 
         JFrame frame = new JFrame("Simple Graph View");
