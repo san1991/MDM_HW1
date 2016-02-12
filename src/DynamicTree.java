@@ -23,6 +23,13 @@ public class DynamicTree {
     public DynamicTreeNode root;
     public ArrayList<String> listofUser;
 
+    public int add;
+    public int delete;
+    public int update;
+    public int total;
+
+
+
     public DynamicTree(){
         this.leafNodes=new ArrayList<DynamicTreeNode>();
         this.listofUser=new ArrayList<String>();
@@ -75,6 +82,13 @@ public class DynamicTree {
 
     }
 
+    public void clearDatabase(DynamicTreeNode root){
+        root.database.clear();
+        for(DynamicTreeNode dtn:root.children){
+            clearDatabase(dtn);
+        }
+    }
+
     public void initialDatabase_Pointer(File file){
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -117,17 +131,35 @@ public class DynamicTree {
 
     }
 
-    public static void updateDatabase_actualPointer(String user,DynamicTreeNode childNode,DynamicTreeNode parentNode,boolean up){
+    public void updateDatabase_actualPointer(String user,DynamicTreeNode childNode,DynamicTreeNode parentNode,boolean up){
 
         if(up) {
             if (parentNode.database.containsKey(user) && !parentNode.database.get(user).equals(childNode)) {
                 parentNode.database.put(user, childNode);
-                if (parentNode.parent != null)
+                //show how the database be updated (updating entry)
+                //System.out.println("update node: "+parentNode.getName());
+
+
+                this.update++;
+                this.total=this.add+this.delete+this.update;
+                if (parentNode.parent != null){
                     updateDatabase_actualPointer(user, parentNode, parentNode.parent,up);
+
+                }
+                for(DynamicTreeNode dtn:parentNode.children){
+                    updateDatabase_actualPointer(user,childNode,dtn,!up);
+                }
+
 
             }
             else if (!parentNode.database.containsKey(user)) {
                 parentNode.database.put(user, childNode);
+                this.add++;
+                this.total=this.add+this.delete+this.update;
+
+                //show how the database be updated (adding entry)
+                //System.out.println("add in node: "+parentNode.getName());
+
                 if (parentNode.parent != null)
                     updateDatabase_actualPointer(user, parentNode, parentNode.parent,up);
             }
@@ -138,15 +170,41 @@ public class DynamicTree {
             }
         }
         else{
+
+
+
             if(!parentNode.equals(childNode)&&parentNode.database.containsKey(user)){
                 parentNode.database.remove(user);
+                this.delete++;
+                this.total=this.add+this.delete+this.update;
+
+                //show how the database be updated (deleting entry)
+                //System.out.println("delete in node: "+parentNode.getName());
+
+
                 for(DynamicTreeNode dtn:parentNode.children){
-                    updateDatabase_actualPointer(user,childNode,dtn,!up);
+                    updateDatabase_actualPointer(user,childNode,dtn,up);
                 }
             }
         }
 
 
+    }
+
+
+    public void resetCounter(){
+        this.add=0;
+        this.update=0;
+        this.delete=0;
+        this.total=0;
+    }
+
+    public void printUpdateCost(String user){
+        System.out.println("The cost of moving user "+user+" are: ");
+        System.out.println("The number of database which added this entry is : "+this.add);
+        System.out.println("The number of database which delete this entry is : "+this.delete);
+        System.out.println("The number of database which update this entry is : "+this.update);
+        System.out.println("The number of database which totally modified this entry is : "+this.total);
     }
 
     public void initialDatabase_Value(File file){
@@ -173,15 +231,24 @@ public class DynamicTree {
         DynamicTree dt=new DynamicTree();
         File tp=new File("Topology_xc.xml");
         dt.setTopo(tp);
-        //dt.root.printName();
-        //dt.root.children.get(0).printName();
-        //dt.leafNodes.get(0).printName();
+
         File userFile=new File("Users.xml");
         dt.initialDatabase_Pointer(userFile);
+
+        //Testing moving user from one place to another.
+        /*
         ((DynamicTreeNode)dt.root.database.get("2601")).printName();
 
-        updateDatabase_actualPointer("2601",dt.leafNodes.get(40),dt.leafNodes.get(40),true);
+        dt.resetCounter();
+        System.out.println("Starting move 2601 from PA to "+dt.leafNodes.get(12).getName());
+        dt.updateDatabase_actualPointer("2601",dt.leafNodes.get(12),dt.leafNodes.get(12),true);
+
         ((DynamicTreeNode)dt.root.database.get("2601")).printName();
+        dt.printUpdateCost("2601");
+        dt.resetCounter();
+        dt.updateDatabase_actualPointer("2601",dt.leafNodes.get(42),dt.leafNodes.get(42),true);
+        dt.printUpdateCost("2601");
+        */
 
 
         BasicVisualizationServer<String, String> vs = new BasicVisualizationServer<String, String>(new FRLayout<String,String>(tree), new Dimension(600, 500));
