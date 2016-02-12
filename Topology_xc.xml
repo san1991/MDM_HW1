@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nation_root>
+    <east>
+        <east_top>
+            <east_top_1>
+                <ME></ME>
+                <NH></NH>
+                <MA></MA>
+            </east_top_1>
+            <east_top_2>
+                <VT></VT>
+                <NY></NY>
+                <PA></PA>
+            </east_top_2>
+
+        </east_top>
+        <east_mid>
+            <east_mid_1>
+                <TN></TN>
+                <OH></OH>
+                <NC></NC>
+            </east_mid_1>
+            <east_mid_2>
+                <VA></VA>
+                <WV></WV>
+            </east_mid_2>
+
+        </east_mid>
+        <east_bottom>
+            <east_bottom_1>
+                <NC></NC>
+                <SC></SC>
+                <AL></AL>
+            </east_bottom_1>
+            <east_bottom_2>
+                <GA></GA>
+                <FL></FL>
+            </east_bottom_2>
+
+        </east_bottom>
+    </east>
+    <mid>
+        <mid_top>
+            <mid_top_1>
+                <WI></WI>
+                <MN></MN>
+                <MI></MI>
+            </mid_top_1>
+            <mid_top_2>
+                <SD></SD>
+                <ND></ND>
+            </mid_top_2>
+
+        </mid_top>
+        <mid_mid>
+            <mid_mid_1>
+                <IN></IN>
+                <IA></IA>
+                <NE></NE>
+            </mid_mid_1>
+            <mid_mid_2>
+                <IL></IL>
+                <MO></MO>
+                <KS></KS>
+            </mid_mid_2>
+
+        </mid_mid>
+        <mid_bottom>
+            <mid_bottom_1>
+                <NM></NM>
+                <MS></MS>
+                <AR></AR>
+            </mid_bottom_1>
+            <mid_bottom_2>
+                <OK></OK>
+                <LA></LA>
+                <TX></TX>
+            </mid_bottom_2>
+
+        </mid_bottom>
+
+    </mid>
+    <west>
+
+        <west_top>
+            <west_top_1>
+                <WA></WA>
+                <OR></OR>
+                <ID></ID>
+            </west_top_1>
+            <west_top_2>
+                <MT></MT>
+                <WY></WY>
+            </west_top_2>
+
+
+        </west_top>
+        <west_mid>
+            <west_mid_1>
+                <CA></CA>
+                <NV></NV>
+                <UT></UT>
+            </west_mid_1>
+            <west_mid_2>
+                <AZ></AZ>
+                <CO></CO>
+            </west_mid_2>
+
+
+        </west_mid>
+
+    </west>
+
+
+
+</nation_root>
