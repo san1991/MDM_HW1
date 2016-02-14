@@ -2,17 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="04297c01-9fa8-4ba7-97d3-5a7df545e524" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/encodings.xml" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/MDM_homework_1/DynamicTree.class" afterPath="$PROJECT_DIR$/out/production/MDM_homework_1/DynamicTree.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/MDM_homework_1/DynamicTreeNode.class" afterPath="$PROJECT_DIR$/out/production/MDM_homework_1/DynamicTreeNode.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/MDM_homework_1/GraphPanel$1.class" afterPath="$PROJECT_DIR$/out/production/MDM_homework_1/GraphPanel$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/MDM_homework_1/GraphPanel.class" afterPath="$PROJECT_DIR$/out/production/MDM_homework_1/GraphPanel.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/MDM_homework_1/MinimumSpanningTreeDemo$1.class" afterPath="$PROJECT_DIR$/out/production/MDM_homework_1/MinimumSpanningTreeDemo$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/MDM_homework_1/MinimumSpanningTreeDemo$2.class" afterPath="$PROJECT_DIR$/out/production/MDM_homework_1/MinimumSpanningTreeDemo$2.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/MDM_homework_1/MinimumSpanningTreeDemo.class" afterPath="$PROJECT_DIR$/out/production/MDM_homework_1/MinimumSpanningTreeDemo.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/MDM_homework_1/SimpleGraphView$1.class" afterPath="$PROJECT_DIR$/out/production/MDM_homework_1/SimpleGraphView$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/MDM_homework_1/SimpleGraphView$2.class" afterPath="$PROJECT_DIR$/out/production/MDM_homework_1/SimpleGraphView$2.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/MDM_homework_1/SimpleGraphView.class" afterPath="$PROJECT_DIR$/out/production/MDM_homework_1/SimpleGraphView.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/MDM_homework_1/Test.class" afterPath="$PROJECT_DIR$/out/production/MDM_homework_1/Test.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MDM_homework_1.iml" afterPath="$PROJECT_DIR$/MDM_homework_1.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Topology_xc.xml" afterPath="$PROJECT_DIR$/Topology_xc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/DynamicTree.java" afterPath="$PROJECT_DIR$/src/DynamicTree.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/GraphPanel.java" afterPath="$PROJECT_DIR$/src/GraphPanel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Test.java" afterPath="$PROJECT_DIR$/src/Test.java" />
     </list>
     <ignored path="MDM_homework_1.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -37,8 +38,8 @@
       <file leaf-file-name="Test.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Test.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.42993632">
-              <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.17331932">
+              <caret line="22" column="19" selection-start-line="22" selection-start-column="19" selection-end-line="22" selection-end-column="19" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -554,6 +555,13 @@
       <option name="number" value="Default" />
       <updated>1455379840414</updated>
     </task>
+    <task id="LOCAL-00001" summary="Build the topology tree successfully.">
+      <created>1455415961957</created>
+      <option name="number" value="00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1455415961957</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -570,7 +578,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299389" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3299389" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299389" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -884,8 +892,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Test.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.42993632">
-          <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.17331932">
+          <caret line="22" column="19" selection-start-line="22" selection-start-column="19" selection-end-line="22" selection-end-column="19" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
