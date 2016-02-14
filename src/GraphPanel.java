@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
+import java.io.File;
+import java.util.ArrayDeque;
 
 import javax.swing.BorderFactory;
 import javax.swing.JApplet;
@@ -47,18 +49,27 @@ public class GraphPanel {
 
     public static void main(String arg[]){
 
-        Graph<String,Number> graph=createGraph();
+        DynamicTree dt = new DynamicTree();
+        File tp = new File("Topology_xc.xml");
+        dt.setTopo(tp);
+
+        File userFile = new File("Users.xml");
+        dt.initialDatabase_Pointer(userFile);
+
+
+
+        Graph<String,Number> graph=createGraph(dt);
         Forest<String,Number> tree;
 
         VisualizationViewer<String,Number> vv2;
         VisualizationViewer<String,Number> vv0;
 
 
-
+        ///*
         Dimension preferredSize = new Dimension(1500,800);
         Dimension preferredLayoutSize = new Dimension(1500,800);
         Dimension preferredSizeRect = new Dimension(1500,800);
-
+        //*/
         /*
         Dimension preferredSize = new Dimension(300,300);
         Dimension preferredLayoutSize = new Dimension(400,400);
@@ -78,7 +89,7 @@ public class GraphPanel {
 
         Layout<String,Number> layout0 = new KKLayout<String,Number>(graph);
         layout0.setSize(preferredLayoutSize);
-        Layout<String,Number> layout1 = new TreeLayout<String,Number>(tree,150,150);
+        Layout<String,Number> layout1 = new TreeLayout<String,Number>(tree,30,100);
         Layout<String,Number> layout2 = new StaticLayout<String,Number>(graph, layout1);
 
 
@@ -91,7 +102,7 @@ public class GraphPanel {
 
         Transformer<String,Shape> vertexSize = new Transformer<String,Shape>(){
             public Shape transform(String i){
-                Ellipse2D circle = new Ellipse2D.Double(-15, -15, 30, 30);
+                Ellipse2D circle = new Ellipse2D.Double(-7, -7, 14, 14);
                 // in this case, the vertex is twice as large
                 return AffineTransform.getScaleInstance(2, 2).createTransformedShape(circle);
                 //else return circle;
@@ -128,54 +139,32 @@ public class GraphPanel {
 
     }
 
-    private static Graph<String, Number> createGraph() {
+    private static Graph<String, Number> createGraph(DynamicTree dt) {
         Graph<String, Number> graph =   new DirectedOrderedSparseMultigraph<String, Number>();
 
         //Graph<String, Number> graph =   new DirectedSparseGraph<String, Number>();
 
-        final String vertex1 = "z10";
-        final String vertex2 = "200";
-        final String vertex3 = "3";
-        final String vertex4 = "4";
-        final String vertex5 = "5";
-        final String vertex6 = "6";
-        final String vertex7 = "7";
-        final String vertex8 = "8";
-        final String vertex9 = "9";
+        String[] vertex=new String[dt.size];
+        ArrayDeque<DynamicTreeNode> nodeQue=new ArrayDeque<DynamicTreeNode>();
+        nodeQue.add(dt.root);
 
+        int j=0;
+        while(!nodeQue.isEmpty()){
+            DynamicTreeNode dtn=nodeQue.poll();
+            DynamicTreeNode dtnParent=nodeQue.poll();
+            graph.addVertex(dtn.getName());
 
-        graph.addVertex(vertex1);
-        graph.addVertex(vertex2);
-        graph.addVertex(vertex3);
-        graph.addVertex(vertex4);
-        graph.addVertex(vertex5);
-        graph.addVertex(vertex6);
-        graph.addVertex(vertex7);
-        graph.addVertex(vertex8);
-        graph.addVertex(vertex9);
+            if(dtnParent!=null){
+                graph.addEdge(j,dtnParent.getName(),dtn.getName());
+                j++;
+            }
 
+            for(DynamicTreeNode children:dtn.children){
+                nodeQue.add(children);
+                nodeQue.add(dtn);
+            }
+        }
 
-        graph.addEdge(1, vertex1, vertex2, EdgeType.DIRECTED);
-        graph.addEdge(2, vertex1, vertex3, EdgeType.DIRECTED);
-        graph.addEdge(3, vertex2, vertex4, EdgeType.DIRECTED);
-        graph.addEdge(4, vertex2, vertex5, EdgeType.DIRECTED);
-        graph.addEdge(5, vertex3, vertex6, EdgeType.DIRECTED);
-        graph.addEdge(6, vertex3, vertex7, EdgeType.DIRECTED);
-        graph.addEdge(7, vertex4, vertex8, EdgeType.DIRECTED);
-        graph.addEdge(8, vertex4, vertex9, EdgeType.DIRECTED);
-        graph.addEdge(9, vertex2, vertex4, EdgeType.DIRECTED);
-
-        graph.addEdge(10, vertex9, vertex6, EdgeType.DIRECTED);
-
-        /*
-        graph.addEdge(6, vertex3, vertex2, EdgeType.DIRECTED);
-        graph.addEdge(7, vertex2, vertex4, EdgeType.DIRECTED);
-        graph.addEdge(1, vertex1, vertex2, EdgeType.DIRECTED);
-        graph.addEdge(2, vertex2, vertex3, EdgeType.DIRECTED);
-        graph.addEdge(3, vertex3, vertex5, EdgeType.DIRECTED);
-        graph.addEdge(4, vertex1, vertex4, EdgeType.DIRECTED);
-        graph.addEdge(5, vertex4, vertex5, EdgeType.DIRECTED);
-        */
 
         return graph;
     }

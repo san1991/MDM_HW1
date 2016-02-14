@@ -7,7 +7,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="MDM_homework_1" level="project" />
     <orderEntry type="library" name="lib" level="project" />
   </component>
 </module>
-
