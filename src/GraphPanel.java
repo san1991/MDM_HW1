@@ -130,10 +130,11 @@ public class GraphPanel {
 
     private static Graph<String, Number> createGraph() {
         Graph<String, Number> graph =   new DirectedOrderedSparseMultigraph<String, Number>();
+        //Graph<String, Number> graph =   new UndirectedOrderedSparseMultigraph<String, Number>();
 
         //Graph<String, Number> graph =   new DirectedSparseGraph<String, Number>();
 
-        final String vertex1 = "z10";
+        final String vertex1 = "root";
         final String vertex2 = "200";
         final String vertex3 = "3";
         final String vertex4 = "4";
@@ -155,17 +156,21 @@ public class GraphPanel {
         graph.addVertex(vertex9);
 
 
-        graph.addEdge(1, vertex1, vertex2, EdgeType.DIRECTED);
-        graph.addEdge(2, vertex1, vertex3, EdgeType.DIRECTED);
-        graph.addEdge(3, vertex2, vertex4, EdgeType.DIRECTED);
-        graph.addEdge(4, vertex2, vertex5, EdgeType.DIRECTED);
-        graph.addEdge(5, vertex3, vertex6, EdgeType.DIRECTED);
-        graph.addEdge(6, vertex3, vertex7, EdgeType.DIRECTED);
-        graph.addEdge(7, vertex4, vertex8, EdgeType.DIRECTED);
-        graph.addEdge(8, vertex4, vertex9, EdgeType.DIRECTED);
-        graph.addEdge(9, vertex2, vertex4, EdgeType.DIRECTED);
+        graph.addEdge(1, vertex1, vertex2);
+        graph.addEdge(2, vertex1, vertex3);
+        graph.addEdge(3, vertex2, vertex4);
+        graph.addEdge(4, vertex2, vertex5);
+        graph.addEdge(5, vertex3, vertex6);
+        graph.addEdge(6, vertex3, vertex7);
+        graph.addEdge(7, vertex4, vertex8);
+        graph.addEdge(8, vertex4, vertex9);
+        graph.addEdge(9, vertex2, vertex4);
+        graph.addEdge(10, vertex9, vertex6);
+        graph.addEdge(11, vertex5, vertex2);
+        graph.addEdge(12, vertex5, vertex9);
+        graph.addEdge(13, vertex5, vertex9);
 
-        graph.addEdge(10, vertex9, vertex6, EdgeType.DIRECTED);
+
 
         /*
         graph.addEdge(6, vertex3, vertex2, EdgeType.DIRECTED);
