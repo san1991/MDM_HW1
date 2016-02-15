@@ -134,6 +134,7 @@ public class GraphPanel {
 
         //Graph<String, Number> graph =   new DirectedSparseGraph<String, Number>();
 
+        /*
         final String vertex1 = "root";
         final String vertex2 = "200";
         final String vertex3 = "3";

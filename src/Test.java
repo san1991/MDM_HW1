@@ -10,7 +10,7 @@ import edu.uci.ics.jung.visualization.VisualizationImageServer;
 import edu.uci.ics.jung.visualization.VisualizationServer;
 import edu.uci.ics.jung.visualization.decorators.EdgeShape;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
-import sun.plugin.dom.core.Document;
+//import sun.plugin.dom.core.Document;
 
 import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
