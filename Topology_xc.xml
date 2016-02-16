@@ -1,116 +1,116 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<nation_root>
+<root>
     <east>
-        <east_top>
-            <east_top_1>
+        <ET>
+            <ET1>
                 <ME></ME>
                 <NH></NH>
                 <MA></MA>
-            </east_top_1>
-            <east_top_2>
+            </ET1>
+            <ET2>
                 <VT></VT>
                 <NY></NY>
                 <PA></PA>
-            </east_top_2>
+            </ET2>
 
-        </east_top>
-        <east_mid>
-            <east_mid_1>
+        </ET>
+        <EM>
+            <EM1>
                 <TN></TN>
                 <OH></OH>
                 <NC></NC>
-            </east_mid_1>
-            <east_mid_2>
+            </EM1>
+            <EM2>
                 <VA></VA>
                 <WV></WV>
-            </east_mid_2>
+            </EM2>
 
-        </east_mid>
-        <east_bottom>
-            <east_bottom_1>
-                <NC></NC>
+        </EM>
+        <EB>
+            <EB1>
+                <NT></NT>
                 <SC></SC>
                 <AL></AL>
-            </east_bottom_1>
-            <east_bottom_2>
+            </EB1>
+            <EB2>
                 <GA></GA>
                 <FL></FL>
-            </east_bottom_2>
+            </EB2>
 
-        </east_bottom>
+        </EB>
     </east>
     <mid>
-        <mid_top>
-            <mid_top_1>
+        <MT>
+            <MT1>
                 <WI></WI>
                 <MN></MN>
                 <MI></MI>
-            </mid_top_1>
-            <mid_top_2>
+            </MT1>
+            <MT2>
                 <SD></SD>
                 <ND></ND>
-            </mid_top_2>
+            </MT2>
 
-        </mid_top>
-        <mid_mid>
-            <mid_mid_1>
+        </MT>
+        <MM>
+            <MM1>
                 <IN></IN>
                 <IA></IA>
                 <NE></NE>
-            </mid_mid_1>
-            <mid_mid_2>
+            </MM1>
+            <MM2>
                 <IL></IL>
                 <MO></MO>
                 <KS></KS>
-            </mid_mid_2>
+            </MM2>
 
-        </mid_mid>
-        <mid_bottom>
-            <mid_bottom_1>
+        </MM>
+        <MB>
+            <MB1>
                 <NM></NM>
                 <MS></MS>
                 <AR></AR>
-            </mid_bottom_1>
-            <mid_bottom_2>
+            </MB1>
+            <MB2>
                 <OK></OK>
                 <LA></LA>
                 <TX></TX>
-            </mid_bottom_2>
+            </MB2>
 
-        </mid_bottom>
+        </MB>
 
     </mid>
     <west>
 
-        <west_top>
-            <west_top_1>
+        <WT>
+            <WT1>
                 <WA></WA>
                 <OR></OR>
                 <ID></ID>
-            </west_top_1>
-            <west_top_2>
-                <MT></MT>
+            </WT1>
+            <WT2>
+                <MP></MP>
                 <WY></WY>
-            </west_top_2>
+            </WT2>
 
 
-        </west_top>
-        <west_mid>
-            <west_mid_1>
+        </WT>
+        <WM>
+            <WM1>
                 <CA></CA>
                 <NV></NV>
                 <UT></UT>
-            </west_mid_1>
-            <west_mid_2>
+            </WM1>
+            <WM2>
                 <AZ></AZ>
                 <CO></CO>
-            </west_mid_2>
+            </WM2>
 
 
-        </west_mid>
+        </WM>
 
     </west>
 
 
 
-</nation_root>
+</root>
