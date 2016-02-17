@@ -43,8 +43,6 @@ public class Test {
 
         */
 
-<<<<<<< HEAD
-=======
 
         /*
 >>>>>>> 4787f99b9d7e09f695eee8c4945bea4637391e5c

@@ -140,9 +140,6 @@ public class GraphPanel {
         frame.setVisible(true);
 
 
-<<<<<<< HEAD
-=======
-
 
         //code for mode selection and user interaction
 
@@ -150,8 +147,6 @@ public class GraphPanel {
         controlUI.setVisible(true);
         controlUI.addBaseStationsInDropdown();
 
-
->>>>>>> 4787f99b9d7e09f695eee8c4945bea4637391e5c
     }
 
     private static Graph<String, Number> createGraph(DynamicTree dt) {
@@ -185,8 +180,5 @@ public class GraphPanel {
     }
 
 
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 4787f99b9d7e09f695eee8c4945bea4637391e5c
+
