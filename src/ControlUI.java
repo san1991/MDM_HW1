@@ -275,7 +275,7 @@ public class ControlUI extends javax.swing.JFrame {
 
         jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder("Change Mode"));
 
-        jComboBox_ChangeMode.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Database Values", "Forwarding Pointers", "Actual Pointers" }));
+        jComboBox_ChangeMode.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Database Values", "Forwarding Pointers", "Actual Pointers", "Replication" }));
 
         jButton_CM_Change.setText("Change");
         jButton_CM_Change.addActionListener(new java.awt.event.ActionListener() {

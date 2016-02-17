@@ -1,7 +1,12 @@
 
 
 import java.io.*;
+
+import com.sun.org.apache.bcel.internal.generic.NEW;
+import org.apache.commons.collections15.map.HashedMap;
 import org.w3c.dom.*;
+
+import javax.swing.tree.TreeNode;
 import javax.xml.parsers.*;
 import java.util.ArrayList;
 
@@ -10,6 +15,7 @@ import java.util.HashMap;
 /**
  * Created by Administrator on 2/8/2016.
  */
+
 public class DynamicTree {
     public ArrayList<DynamicTreeNode> leafNodes;
     public HashMap<String,DynamicTreeNode> testDatabase;
@@ -24,12 +30,16 @@ public class DynamicTree {
 
     public int size;
 
+    private HashMap<String, Integer > user_mobility_count;
+    private HashMap<String, HashMap<DynamicTreeNode, Integer> > user_call_count;
 
     public DynamicTree() {
         this.leafNodes = new ArrayList<DynamicTreeNode>();
         this.listofUser = new ArrayList<String>();
         this.size=0;
         this.testDatabase=new HashMap<String, DynamicTreeNode>();
+        this.user_mobility_count= new HashMap<>();
+        this.user_call_count= new HashMap<>();
 
     }
 
@@ -41,8 +51,30 @@ public class DynamicTree {
         this.size=0;
 
         this.testDatabase=new HashMap<String, DynamicTreeNode>();
+
+        this.user_mobility_count= new HashMap<>();
+        this.user_call_count= new HashMap<>();
     }
 
+
+    public void updateUserCallMetric(String MH, DynamicTreeNode mobileHost, Integer i){
+
+        HashMap<DynamicTreeNode, Integer> hostList= user_call_count.get(MH);
+
+        if (hostList==null){
+            hostList= new HashMap<DynamicTreeNode, Integer>();
+            hostList.put(mobileHost,0);
+            user_call_count.put(MH, hostList);
+        }
+
+        hostList.put(mobileHost,(hostList.get(mobileHost)+i));
+
+    }
+
+    public void updateUserMobilityMetric(String MH, Integer i){
+        user_mobility_count.put(MH,user_mobility_count.get(MH)+i);
+
+    }
     //Create topology tree by parsing xml file
     public void setTopo(File file) {
         try {
@@ -374,10 +406,8 @@ public class DynamicTree {
 
 //*/
 
-
-
-
     }
+
 
 
 }
