@@ -379,8 +379,17 @@ public class ControlUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>                        
 
+
+    // code for change host location
     private void jButton_CHL_ChangeActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
+        DynamicTreeNode oldBaseStation=(DynamicTreeNode)jComboBox_CHL_OldBaseStation.getSelectedItem();
+        DynamicTreeNode newBaseStation=(DynamicTreeNode)jComboBox_CHL_NewBaseStation.getSelectedItem();
+        String host=jComboBox_CHL_Host.getSelectedItem().toString();
+
+        changeBaseStation(oldBaseStation,newBaseStation,host);
+
+
     }
 
     private void jComboBox_BaseStationsActionPerformed(java.awt.event.ActionEvent evt) {
@@ -407,6 +416,7 @@ public class ControlUI extends javax.swing.JFrame {
         //changeBaseStationColor(baseStations.get(3));
         Constants.CURRENT_MODE=jComboBox_ChangeMode.getSelectedItem().toString();
         initializeChangeMode();
+        //changeBaseStationColor(baseStations.get(4));
 
     }
 
@@ -463,7 +473,28 @@ public class ControlUI extends javax.swing.JFrame {
     DynamicTreeNode child;
     DynamicTreeNode parent;
 
-    public void changeBaseStationColor(DynamicTreeNode baseStation){
+
+    // this function calls necessary functions of DynamicTree class to change the Base Station for an user
+    private void changeBaseStation(DynamicTreeNode oldBaseStation, DynamicTreeNode newBaseStation, String host){
+
+        ArrayList<DynamicTreeNode> updatedNodes= new ArrayList<>();
+        ArrayList<DynamicTreeNode> deletedNodes= new ArrayList<>();
+
+
+        if (Constants.CURRENT_MODE==Constants.MODE_ACTUAL_POINTERS){
+
+        }else if (Constants.CURRENT_MODE==Constants.MODE_DATABASE_VALUES){
+
+
+        }else if (Constants.CURRENT_MODE.toString()==Constants.MODE_FORWARD_POINTERS){
+
+        }else if (Constants.CURRENT_MODE.toString()==Constants.MODE_REPLICATION){
+
+        }
+    }
+
+
+    private void changeBaseStationColor(DynamicTreeNode baseStation){
 
         child=baseStation;
         parent=child.parent;
@@ -478,7 +509,7 @@ public class ControlUI extends javax.swing.JFrame {
                 while (parent!=null){
 
                     try {
-                        sleep(1000);
+                        Thread.sleep(1000);
                     } catch (Exception e) {
                     }
                     child.changeColor=false;
