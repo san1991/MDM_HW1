@@ -6,6 +6,7 @@ public class DynamicTreeNode {
     public DynamicTreeNode parent;
     public List<DynamicTreeNode> children;
     public HashMap<String, Object> database;
+    public boolean changeColor=false;
 
     private String name;
 

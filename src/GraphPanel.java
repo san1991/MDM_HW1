@@ -17,6 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import com.sun.javaws.Main;
 import edu.uci.ics.jung.graph.*;
 import edu.uci.ics.jung.graph.util.EdgeType;
 import org.apache.commons.collections15.Transformer;
@@ -63,13 +64,14 @@ public class GraphPanel {
         // for Database values
         dt.initialDatabase_Value(userFile);
 
-        Graph<String,Number> graph=createGraph(dt);
+        Graph<DynamicTreeNode,Number> graph=createGraph(dt);
 
 
-        Forest<String,Number> tree;
 
-        VisualizationViewer<String,Number> vv2;
-        VisualizationViewer<String,Number> vv0;
+        Forest<DynamicTreeNode,Number> tree;
+
+        VisualizationViewer<DynamicTreeNode,Number> vv2;
+        VisualizationViewer<DynamicTreeNode,Number> vv0;
 
 
         Dimension preferredSize = new Dimension(1500,800);
@@ -77,9 +79,9 @@ public class GraphPanel {
         Dimension preferredSizeRect = new Dimension(1500,800);
 
 
-        MinimumSpanningForest2<String,Number> prim =
-                new MinimumSpanningForest2<String,Number>(graph,
-                        new DelegateForest<String,Number>(), DelegateTree.<String,Number>getFactory(),
+        MinimumSpanningForest2<DynamicTreeNode,Number> prim =
+                new MinimumSpanningForest2<DynamicTreeNode,Number>(graph,
+                        new DelegateForest<DynamicTreeNode,Number>(), DelegateTree.<DynamicTreeNode,Number>getFactory(),
                         new ConstantTransformer(1.0));
 
 
@@ -88,33 +90,41 @@ public class GraphPanel {
         // create two layouts for the one graph, one layout for each model
 
 
-        Layout<String,Number> layout0 = new KKLayout<String,Number>(graph);
+        Layout<DynamicTreeNode,Number> layout0 = new KKLayout<DynamicTreeNode,Number>(graph);
         layout0.setSize(preferredLayoutSize);
-        Layout<String,Number> layout1 = new TreeLayout<String,Number>(tree,30,100);
-        Layout<String,Number> layout2 = new StaticLayout<String,Number>(graph, layout1);
+        Layout<DynamicTreeNode,Number> layout1 = new TreeLayout<DynamicTreeNode,Number>(tree,33,140);
+        Layout<DynamicTreeNode,Number> layout2 = new StaticLayout<DynamicTreeNode,Number>(graph, layout1);
 
 
-        VisualizationModel<String,Number> vm0 =
-                new DefaultVisualizationModel<String,Number>(layout0, preferredSize);
-        VisualizationModel<String,Number> vm2 = new DefaultVisualizationModel<String,Number>(layout2, preferredSizeRect);
+        VisualizationModel<DynamicTreeNode,Number> vm0 =
+                new DefaultVisualizationModel<DynamicTreeNode,Number>(layout0, preferredSize);
+        VisualizationModel<DynamicTreeNode,Number> vm2 = new DefaultVisualizationModel<DynamicTreeNode,Number>(layout2, preferredSizeRect);
 
         // adding transformer for fixing vertex size
 
-        Transformer<String,Shape> vertexSize = new Transformer<String,Shape>(){
-            public Shape transform(String i){
+        Transformer<DynamicTreeNode,Shape> vertexSize = new Transformer<DynamicTreeNode,Shape>(){
+            public Shape transform(DynamicTreeNode i){
                 Ellipse2D circle = new Ellipse2D.Double(-7, -7, 14, 14);
                 // in this case, the vertex is twice as large
                 return AffineTransform.getScaleInstance(2, 2).createTransformedShape(circle);
                 //else return circle;
             }
         };
+        Transformer<DynamicTreeNode,Paint> vertexColor = new Transformer<DynamicTreeNode,Paint>() {
+            public Paint transform(DynamicTreeNode h) {
+                if(h.changeColor)
+                    return Color.GREEN;
+                else
+                    return Color.RED;
+            }
+        };
 
 
+        vv0 = new VisualizationViewer<DynamicTreeNode,Number>(vm0, preferredSize);
+        vv2 = new VisualizationViewer<DynamicTreeNode,Number>(vm2, preferredSizeRect);
 
-        vv0 = new VisualizationViewer<String,Number>(vm0, preferredSize);
-        vv2 = new VisualizationViewer<String,Number>(vm2, preferredSizeRect);
 
-
+        vv2.getRenderContext().setVertexFillPaintTransformer(vertexColor);
         vv2.getRenderContext().setMultiLayerTransformer(vv0.getRenderContext().getMultiLayerTransformer());
         vv2.getRenderContext().setEdgeShapeTransformer(new EdgeShape.Line());
         vv2.getRenderContext().setVertexLabelTransformer(new ToStringLabeller());
@@ -142,13 +152,15 @@ public class GraphPanel {
         //code for mode selection and user interaction
 
         ControlUI controlUI = new ControlUI(dt.leafNodes,vv2,graph);
-        controlUI.setVisible(true);
         controlUI.addBaseStationsInDropdown();
+        controlUI.setVisible(true);
+
+
 
     }
 
-    private static Graph<String, Number> createGraph(DynamicTree dt) {
-        Graph<String, Number> graph =   new DirectedOrderedSparseMultigraph<String, Number>();
+    private static Graph<DynamicTreeNode, Number> createGraph(DynamicTree dt) {
+        Graph<DynamicTreeNode, Number> graph =   new DirectedOrderedSparseMultigraph<DynamicTreeNode, Number>();
 
         //Graph<String, Number> graph =   new DirectedSparseGraph<String, Number>();
 
@@ -160,10 +172,10 @@ public class GraphPanel {
         while(!nodeQue.isEmpty()){
             DynamicTreeNode dtn=nodeQue.poll();
             DynamicTreeNode dtnParent=nodeQue.poll();
-            graph.addVertex(dtn.getName());
+            graph.addVertex(dtn);
 
             if(dtnParent!=null){
-                graph.addEdge(edgeName,dtnParent.getName(),dtn.getName());
+                graph.addEdge(edgeName,dtnParent,dtn);
                 edgeName++;
             }
 

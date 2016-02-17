@@ -6,7 +6,9 @@
 
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
+import org.apache.commons.collections15.Transformer;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -22,10 +24,10 @@ public class ControlUI extends javax.swing.JFrame {
      * Creates new form ControlUI
      */
     ArrayList<DynamicTreeNode> baseStations;
-    VisualizationViewer<String,Number> graphViewer;
-    Graph<String,Number> graph;
+    VisualizationViewer<DynamicTreeNode,Number> graphViewer;
+    Graph<DynamicTreeNode,Number> graph;
 
-    public ControlUI(ArrayList<DynamicTreeNode> bs, VisualizationViewer<String,Number> graphViewer, Graph<String,Number> graph) {
+    public ControlUI(ArrayList<DynamicTreeNode> bs, VisualizationViewer<DynamicTreeNode,Number> graphViewer, Graph<DynamicTreeNode,Number> graph) {
         this.baseStations=bs;
         this.graphViewer=graphViewer;
         this.graph=graph;
@@ -387,15 +389,8 @@ public class ControlUI extends javax.swing.JFrame {
 
     private void jButton_CM_ChangeActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
-        /*
-        if(jComboBox_ChangeMode.getSelectedItem().toString()==Constants.MODE_ACTUAL_POINTERS)
-            System.out.println(jComboBox_ChangeMode.getSelectedItem().toString());
-            */
-        //graph.addEdge(edgeName++,"ET2","VT");
 
-        graph.addEdge(GraphPanel.edgeName++,"ET2","ET1");
-        graphViewer.repaint();
-
+        changeBaseStationColor(baseStations.get(3));
 
     }
 
@@ -449,6 +444,65 @@ public class ControlUI extends javax.swing.JFrame {
         }
     }
 
+    DynamicTreeNode child;
+    DynamicTreeNode parent;
+
+    public void changeBaseStationColor(DynamicTreeNode baseStation){
+
+        child=baseStation;
+        parent=child.parent;
+
+        child.changeColor=true;
+        graphViewer.repaint();
+
+        new Thread() {
+            @Override
+            public void run() {
+
+                while (parent!=null){
+
+                    try {
+                        sleep(1000);
+                    } catch (Exception e) {
+                    }
+                    child.changeColor=false;
+                    parent.changeColor=true;
+                    child=parent;
+                    parent=parent.parent;
+                    graphViewer.repaint();
+
+                }
+                try {
+                    sleep(3000);
+                    child.changeColor=false;
+                    graphViewer.repaint();
+                }catch (Exception ex){
+
+                }
+
+
+
+            }
+        }.start();
+
+
+        /*
+        new Thread() {
+            @Override
+            public void run() {
+
+                try {
+                    sleep(10000);
+                } catch (Exception e) {
+                }
+            }
+        }.start();
+        */
+
+
+
+
+    }
 
 
     // Variables declaration - do not modify                     
