@@ -43,6 +43,8 @@ public class Test {
 
         */
 
+
+        /*
         JFrame f = new JFrame();
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.getContentPane().add(new MinimumSpanningTreeDemo());

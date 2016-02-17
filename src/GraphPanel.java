@@ -135,6 +135,15 @@ public class GraphPanel {
         frame.setVisible(true);
 
 
+
+
+        //code for mode selection and user interaction
+
+        ControlUI controlUI = new ControlUI(dt.leafNodes);
+        controlUI.setVisible(true);
+        controlUI.addBaseStationsInDropdown();
+
+
     }
 
     private static Graph<String, Number> createGraph(DynamicTree dt) {
