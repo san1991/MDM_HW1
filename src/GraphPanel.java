@@ -52,17 +52,8 @@ public class GraphPanel {
     public static void main(String arg[]){
 
         DynamicTree dt = new DynamicTree();
-        File tp = new File("Topology_xc.xml");
-        dt.setTopo(tp);
 
-        File userFile = new File("Users.xml");
-
-        //for actual pointers
-        dt.initialDatabase_Pointer(userFile);
-
-
-        // for Database values
-        dt.initialDatabase_Value(userFile);
+        dt.setTopo(Constants.TOPOLOGY_FILE);
 
         Graph<DynamicTreeNode,Number> graph=createGraph(dt);
 
@@ -151,9 +142,15 @@ public class GraphPanel {
 
         //code for mode selection and user interaction
 
-        ControlUI controlUI = new ControlUI(dt.leafNodes,vv2,graph);
+        ControlUI controlUI = new ControlUI(dt,vv2);
         controlUI.addBaseStationsInDropdown();
         controlUI.setVisible(true);
+
+
+        // code for mode simulation
+
+
+        //for actual pointers
 
 
 

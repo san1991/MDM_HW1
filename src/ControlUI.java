@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 
+import com.javafx.tools.doclets.internal.toolkit.builders.ConstantsSummaryBuilder;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 import org.apache.commons.collections15.Transformer;
@@ -25,13 +26,26 @@ public class ControlUI extends javax.swing.JFrame {
      */
     ArrayList<DynamicTreeNode> baseStations;
     VisualizationViewer<DynamicTreeNode,Number> graphViewer;
-    Graph<DynamicTreeNode,Number> graph;
+    //Graph<DynamicTreeNode,Number> graph;
+    DynamicTree completeTree;
 
-    public ControlUI(ArrayList<DynamicTreeNode> bs, VisualizationViewer<DynamicTreeNode,Number> graphViewer, Graph<DynamicTreeNode,Number> graph) {
-        this.baseStations=bs;
+    public ControlUI(DynamicTree dynamicTree, VisualizationViewer<DynamicTreeNode,Number> graphViewer) {
+        this.completeTree=dynamicTree;
+        this.baseStations=dynamicTree.leafNodes;
         this.graphViewer=graphViewer;
-        this.graph=graph;
+        //this.graph=graph;
         initComponents();
+
+        // initialize the database based on the mode selection
+
+        Constants.CURRENT_MODE=jComboBox_ChangeMode.getSelectedItem().toString();
+        initializeChangeMode();
+
+
+
+
+
+
     }
 
     /**
@@ -390,7 +404,9 @@ public class ControlUI extends javax.swing.JFrame {
     private void jButton_CM_ChangeActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
 
-        changeBaseStationColor(baseStations.get(3));
+        //changeBaseStationColor(baseStations.get(3));
+        Constants.CURRENT_MODE=jComboBox_ChangeMode.getSelectedItem().toString();
+        initializeChangeMode();
 
     }
 
@@ -473,7 +489,7 @@ public class ControlUI extends javax.swing.JFrame {
 
                 }
                 try {
-                    sleep(3000);
+                    sleep(1000);
                     child.changeColor=false;
                     graphViewer.repaint();
                 }catch (Exception ex){
@@ -502,6 +518,19 @@ public class ControlUI extends javax.swing.JFrame {
 
 
 
+    }
+    private void initializeChangeMode(){
+        if (Constants.CURRENT_MODE==Constants.MODE_ACTUAL_POINTERS){
+            completeTree.initialDatabase_Pointer(Constants.USER_FILE);
+            System.out.println(Constants.CURRENT_MODE);
+        }else if (Constants.CURRENT_MODE==Constants.MODE_DATABASE_VALUES){
+            completeTree.initialDatabase_Value(Constants.USER_FILE);
+
+        }else if (Constants.CURRENT_MODE.toString()==Constants.MODE_FORWARD_POINTERS){
+
+        }else if (Constants.CURRENT_MODE.toString()==Constants.MODE_REPLICATION){
+
+        }
     }
 
 
