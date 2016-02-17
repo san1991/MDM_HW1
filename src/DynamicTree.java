@@ -5,6 +5,7 @@ import java.io.*;
 import org.w3c.dom.*;
 
 import javax.xml.parsers.*;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 
 import java.util.HashMap;
@@ -154,6 +155,8 @@ public class DynamicTree {
                                             //System.out.println(user.getFirstChild().getNodeValue());
                                             if (dt.parent != null)
                                                 updateDatabase_actualPointer(userNum, dt, dt, true,new ArrayList<DynamicTreeNode>(),new ArrayList<DynamicTreeNode>());
+                                                updateUserMobilityMetric(userNum,0);
+
                                                 this.testDatabase.put(userNum,dt);
                                         }
                                     }
@@ -255,8 +258,10 @@ public class DynamicTree {
 
                 this.update++;
                 this.total = this.add + this.delete + this.update;
+                updatedNodes.add(parentNode);
                 if (parentNode.parent != null) {
                     updateDatabase_actualPointer(user, parentNode, parentNode.parent, up,updatedNodes,deletedNodes);
+
 
                 }
                 for (DynamicTreeNode dtn : parentNode.children) {
@@ -268,7 +273,7 @@ public class DynamicTree {
                 parentNode.database.put(user, childNode);
                 this.add++;
                 this.total = this.add + this.delete + this.update;
-
+                updatedNodes.add(parentNode);
                 //show how the database be updated (adding entry)
                 //System.out.println("add in node: "+parentNode.getName());
 
@@ -286,7 +291,7 @@ public class DynamicTree {
                 parentNode.database.remove(user);
                 this.delete++;
                 this.total = this.add + this.delete + this.update;
-
+                deletedNodes.add(parentNode);
                 //show how the database be updated (deleting entry)
                 //System.out.println("delete in node: "+parentNode.getName());
 
@@ -309,7 +314,7 @@ public class DynamicTree {
                 parentNode.database.put(user, childNode);
                 this.add++;
                 this.total = this.add + this.delete + this.update;
-
+                updatedNodes.add(parentNode);
                 //show how the database be updated (adding entry)
                 //System.out.println("add in node: "+parentNode.getName());
 
@@ -326,6 +331,7 @@ public class DynamicTree {
                 parentNode.database.put(user, childNode);
                 this.update++;
                 this.total = this.add + this.delete + this.update;
+                updatedNodes.add(parentNode);
                 //show how the database be updated (updating entry)
                 //System.out.println("update node: "+parentNode.getName());
 
@@ -347,6 +353,7 @@ public class DynamicTree {
 
                     this.delete++;
                     this.total = this.add + this.delete + this.update;
+                    deletedNodes.add(parentNode);
                     //show how the database be updated (deleting entry)
                     //System.out.println("delete in node: " + parentNode.getName());
 
@@ -379,20 +386,74 @@ public class DynamicTree {
         DynamicTreeNode deletingEnd=oldLocation;
         DynamicTreeNode deletingChild=oldLocation;
         for(int i=0;i<level;i++){
+            //System.out.println("adding in node: "+addingEnd.getName());
             addingEnd.database.put(user,addingChild);
             String child=addingEnd.getName();
             addingEnd=addingEnd.parent;
             addingChild=getNodeByName(child);
-
+            this.add++;
+            this.total = this.add + this.delete + this.update;
+            //System.out.println("deleting in node: "+deletingEnd.getName());
             deletingEnd.database.remove(user);
-            
-
-
+            String dChild=deletingEnd.getName();
+            deletingEnd=deletingEnd.parent;
+            deletingChild=getNodeByName(dChild);
+            this.delete++;
+            this.total = this.add + this.delete + this.update;
         }
 
+        deletingEnd.database.put(user,addingEnd);
+        System.out.println("updating in node: "+deletingEnd.getName());
+        this.update++;
+        this.total = this.add + this.delete + this.update;
 
 
     }
+
+    public int getCMR(String user, DynamicTreeNode node){
+        return this.user_call_count.get(user).get(node)/this.user_mobility_count.get(user);
+    }
+
+    public int getAggCMR(String user,DynamicTreeNode node){
+        ArrayDeque<DynamicTreeNode> n=new ArrayDeque<DynamicTreeNode>();
+        n.add(node);
+        int aggCMR=0;
+        while(!n.isEmpty()){
+            DynamicTreeNode current=n.poll();
+            if(current.children.size()==0){
+                aggCMR+=getCMR(user,current);
+            }else{
+                for(DynamicTreeNode cc:current.children){
+                    n.add(cc);
+                }
+            }
+        }
+        return aggCMR;
+    }
+
+    public int findForwardingLevel(String user,DynamicTreeNode oldLocation){
+        int level=0;
+        int result=level;
+        int max=getCMR(user,oldLocation);
+        int lastLevel=max;
+        while(oldLocation.parent!=null){
+            level++;
+            oldLocation=oldLocation.parent;
+
+            int aggCMR=getAggCMR(user,oldLocation);
+            if(aggCMR-lastLevel>max){
+                max=aggCMR-lastLevel;
+                result=level;
+            }
+            lastLevel=aggCMR;
+        }
+
+        return result;
+    }
+
+
+
+
 
 
     public static void main(String[] arg) {
@@ -411,13 +472,15 @@ public class DynamicTree {
 
         dt.resetCounter();
         System.out.println("Starting move 2601 from PA to " + dt.leafNodes.get(4).getName());
-        dt.updateDatabase_actualPointer("2601", dt.leafNodes.get(4), dt.leafNodes.get(4), true,null,null);
+        dt.updateDatabase_actualPointer("2601", dt.leafNodes.get(4), dt.leafNodes.get(4), true,
+                new ArrayList<DynamicTreeNode>(),new ArrayList<DynamicTreeNode>());
 
 
         ((DynamicTreeNode) dt.root.database.get("2601")).printName();
         dt.printUpdateCost("2601");
         dt.resetCounter();
-        dt.updateDatabase_actualPointer("2601", dt.leafNodes.get(42), dt.leafNodes.get(42), true,null,null);
+        dt.updateDatabase_actualPointer("2601", dt.leafNodes.get(42), dt.leafNodes.get(42), true,
+                new ArrayList<DynamicTreeNode>(),new ArrayList<DynamicTreeNode>());
         dt.printUpdateCost("2601");
         //*/
 ///*
@@ -426,15 +489,27 @@ public class DynamicTree {
         ((DynamicTreeNode) dt.root.database.get("2602")).printName();
         dt.resetCounter();
         System.out.println("Starting move 2602 from PA to " + dt.leafNodes.get(4).getName());
-        dt.updateDatabase_databseValue("2602", dt.leafNodes.get(4), dt.leafNodes.get(4), false,null,null);
+        dt.updateDatabase_databseValue("2602", dt.leafNodes.get(4), dt.leafNodes.get(4), false,
+                new ArrayList<DynamicTreeNode>(),new ArrayList<DynamicTreeNode>());
         ((DynamicTreeNode) dt.root.database.get("2602")).printName();
 
         dt.printUpdateCost("2602");
         dt.resetCounter();
-        dt.updateDatabase_databseValue("2602", dt.leafNodes.get(42), dt.leafNodes.get(42), false,null,null);
+        dt.updateDatabase_databseValue("2602", dt.leafNodes.get(42), dt.leafNodes.get(42), false,
+                new ArrayList<DynamicTreeNode>(),new ArrayList<DynamicTreeNode>());
         dt.printUpdateCost("2602");
 
 //*/
+
+        dt.initialDatabase_Pointer(userFile);
+        dt.resetCounter();
+        System.out.println("Starting move 2603 from PA to " + dt.leafNodes.get(4).getName());
+        DynamicTreeNode callerLocation=dt.getCallerLocation("2603");
+        dt.updateDatabase_forwarding_pointer("2603",dt.findForwardingLevel("2603",callerLocation),callerLocation,dt.leafNodes.get(4));
+
+        dt.printUpdateCost("2602");
+
+
 
     }
 
