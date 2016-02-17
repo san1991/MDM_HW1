@@ -4,6 +4,9 @@
  * and open the template in the editor.
  */
 
+import edu.uci.ics.jung.graph.Graph;
+import edu.uci.ics.jung.visualization.VisualizationViewer;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -19,8 +22,13 @@ public class ControlUI extends javax.swing.JFrame {
      * Creates new form ControlUI
      */
     ArrayList<DynamicTreeNode> baseStations;
-    public ControlUI(ArrayList<DynamicTreeNode> bs) {
+    VisualizationViewer<String,Number> graphViewer;
+    Graph<String,Number> graph;
+
+    public ControlUI(ArrayList<DynamicTreeNode> bs, VisualizationViewer<String,Number> graphViewer, Graph<String,Number> graph) {
         this.baseStations=bs;
+        this.graphViewer=graphViewer;
+        this.graph=graph;
         initComponents();
     }
 
@@ -379,10 +387,22 @@ public class ControlUI extends javax.swing.JFrame {
 
     private void jButton_CM_ChangeActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
+        /*
+        if(jComboBox_ChangeMode.getSelectedItem().toString()==Constants.MODE_ACTUAL_POINTERS)
+            System.out.println(jComboBox_ChangeMode.getSelectedItem().toString());
+            */
+        //graph.addEdge(edgeName++,"ET2","VT");
+
+        graph.addEdge(GraphPanel.edgeName++,"ET2","ET1");
+        graphViewer.repaint();
+
+
     }
 
     private void jButton_GC_CallActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
+
+
     }
 
     private void jComboBox_CHL_OldBaseStationActionPerformed(java.awt.event.ActionEvent evt) {

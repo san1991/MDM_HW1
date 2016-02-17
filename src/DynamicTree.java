@@ -173,61 +173,6 @@ public class DynamicTree {
 
     }
 
-    public void updateDatabase_actualPointer(String user, DynamicTreeNode childNode, DynamicTreeNode parentNode, boolean up) {
-
-        if (up) {
-            if (parentNode.database.containsKey(user) && !parentNode.database.get(user).equals(childNode)) {
-                parentNode.database.put(user, childNode);
-                //show how the database be updated (updating entry)
-                //System.out.println("update node: "+parentNode.getName());
-
-
-                this.update++;
-                this.total = this.add + this.delete + this.update;
-                if (parentNode.parent != null) {
-                    updateDatabase_actualPointer(user, parentNode, parentNode.parent, up);
-
-                }
-                for (DynamicTreeNode dtn : parentNode.children) {
-                    updateDatabase_actualPointer(user, childNode, dtn, !up);
-                }
-
-
-            } else if (!parentNode.database.containsKey(user)) {
-                parentNode.database.put(user, childNode);
-                this.add++;
-                this.total = this.add + this.delete + this.update;
-
-                //show how the database be updated (adding entry)
-                //System.out.println("add in node: "+parentNode.getName());
-
-                if (parentNode.parent != null)
-                    updateDatabase_actualPointer(user, parentNode, parentNode.parent, up);
-            } else if (parentNode.database.containsKey(user) && parentNode.database.get(user).equals(childNode)) {
-                for (DynamicTreeNode dtn : parentNode.children) {
-                    updateDatabase_actualPointer(user, childNode, dtn, !up);
-                }
-            }
-        } else {
-
-
-            if (!parentNode.equals(childNode) && parentNode.database.containsKey(user)) {
-                parentNode.database.remove(user);
-                this.delete++;
-                this.total = this.add + this.delete + this.update;
-
-                //show how the database be updated (deleting entry)
-                //System.out.println("delete in node: "+parentNode.getName());
-
-
-                for (DynamicTreeNode dtn : parentNode.children) {
-                    updateDatabase_actualPointer(user, childNode, dtn, up);
-                }
-            }
-        }
-
-
-    }
 
 
     public void resetCounter() {
@@ -299,6 +244,67 @@ public class DynamicTree {
         return null;
     }
 
+
+    // put code for gui
+
+    public void updateDatabase_actualPointer(String user, DynamicTreeNode childNode, DynamicTreeNode parentNode, boolean up) {
+
+        if (up) {
+            if (parentNode.database.containsKey(user) && !parentNode.database.get(user).equals(childNode)) {
+                parentNode.database.put(user, childNode);
+                //show how the database be updated (updating entry)
+                //System.out.println("update node: "+parentNode.getName());
+
+
+                this.update++;
+                this.total = this.add + this.delete + this.update;
+                if (parentNode.parent != null) {
+                    updateDatabase_actualPointer(user, parentNode, parentNode.parent, up);
+
+                }
+                for (DynamicTreeNode dtn : parentNode.children) {
+                    updateDatabase_actualPointer(user, childNode, dtn, !up);
+                }
+
+
+            } else if (!parentNode.database.containsKey(user)) {
+                parentNode.database.put(user, childNode);
+                this.add++;
+                this.total = this.add + this.delete + this.update;
+
+                //show how the database be updated (adding entry)
+                //System.out.println("add in node: "+parentNode.getName());
+
+                if (parentNode.parent != null)
+                    updateDatabase_actualPointer(user, parentNode, parentNode.parent, up);
+            } else if (parentNode.database.containsKey(user) && parentNode.database.get(user).equals(childNode)) {
+                for (DynamicTreeNode dtn : parentNode.children) {
+                    updateDatabase_actualPointer(user, childNode, dtn, !up);
+                }
+            }
+        } else {
+
+
+            if (!parentNode.equals(childNode) && parentNode.database.containsKey(user)) {
+                parentNode.database.remove(user);
+                this.delete++;
+                this.total = this.add + this.delete + this.update;
+
+                //show how the database be updated (deleting entry)
+                //System.out.println("delete in node: "+parentNode.getName());
+
+
+                for (DynamicTreeNode dtn : parentNode.children) {
+                    updateDatabase_actualPointer(user, childNode, dtn, up);
+                }
+            }
+        }
+
+
+    }
+
+
+    // change gui in here
     public void updateDatabase_Value(String user, DynamicTreeNode childNode, DynamicTreeNode parentNode,boolean isDelete) {
 
         if(!isDelete){

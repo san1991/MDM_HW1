@@ -47,6 +47,7 @@ import edu.uci.ics.jung.visualization.transform.MutableTransformer;
 public class GraphPanel {
 
 
+    public static int edgeName=0;
     public static void main(String arg[]){
 
         DynamicTree dt = new DynamicTree();
@@ -54,31 +55,28 @@ public class GraphPanel {
         dt.setTopo(tp);
 
         File userFile = new File("Users.xml");
+
+        //for actual pointers
         dt.initialDatabase_Pointer(userFile);
 
 
+        // for Database values
+        dt.initialDatabase_Value(userFile);
 
         Graph<String,Number> graph=createGraph(dt);
+
+
         Forest<String,Number> tree;
 
         VisualizationViewer<String,Number> vv2;
         VisualizationViewer<String,Number> vv0;
 
 
-        ///*
         Dimension preferredSize = new Dimension(1500,800);
         Dimension preferredLayoutSize = new Dimension(1500,800);
         Dimension preferredSizeRect = new Dimension(1500,800);
-        //*/
-        /*
-        Dimension preferredSize = new Dimension(300,300);
-        Dimension preferredLayoutSize = new Dimension(400,400);
-        Dimension preferredSizeRect = new Dimension(500,250);
-<<<<<<< HEAD
 
-=======
->>>>>>> 4787f99b9d7e09f695eee8c4945bea4637391e5c
-        */
+
         MinimumSpanningForest2<String,Number> prim =
                 new MinimumSpanningForest2<String,Number>(graph,
                         new DelegateForest<String,Number>(), DelegateTree.<String,Number>getFactory(),
@@ -99,7 +97,6 @@ public class GraphPanel {
         VisualizationModel<String,Number> vm0 =
                 new DefaultVisualizationModel<String,Number>(layout0, preferredSize);
         VisualizationModel<String,Number> vm2 = new DefaultVisualizationModel<String,Number>(layout2, preferredSizeRect);
-
 
         // adding transformer for fixing vertex size
 
@@ -141,9 +138,10 @@ public class GraphPanel {
 
 
 
+
         //code for mode selection and user interaction
 
-        ControlUI controlUI = new ControlUI(dt.leafNodes);
+        ControlUI controlUI = new ControlUI(dt.leafNodes,vv2,graph);
         controlUI.setVisible(true);
         controlUI.addBaseStationsInDropdown();
 
@@ -158,15 +156,15 @@ public class GraphPanel {
         ArrayDeque<DynamicTreeNode> nodeQue=new ArrayDeque<DynamicTreeNode>();
         nodeQue.add(dt.root);
 
-        int j=0;
+
         while(!nodeQue.isEmpty()){
             DynamicTreeNode dtn=nodeQue.poll();
             DynamicTreeNode dtnParent=nodeQue.poll();
             graph.addVertex(dtn.getName());
 
             if(dtnParent!=null){
-                graph.addEdge(j,dtnParent.getName(),dtn.getName());
-                j++;
+                graph.addEdge(edgeName,dtnParent.getName(),dtn.getName());
+                edgeName++;
             }
 
             for(DynamicTreeNode children:dtn.children){
