@@ -74,7 +74,10 @@ public class GraphPanel {
         Dimension preferredSize = new Dimension(300,300);
         Dimension preferredLayoutSize = new Dimension(400,400);
         Dimension preferredSizeRect = new Dimension(500,250);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 4787f99b9d7e09f695eee8c4945bea4637391e5c
         */
         MinimumSpanningForest2<String,Number> prim =
                 new MinimumSpanningForest2<String,Number>(graph,
@@ -137,6 +140,18 @@ public class GraphPanel {
         frame.setVisible(true);
 
 
+<<<<<<< HEAD
+=======
+
+
+        //code for mode selection and user interaction
+
+        ControlUI controlUI = new ControlUI(dt.leafNodes);
+        controlUI.setVisible(true);
+        controlUI.addBaseStationsInDropdown();
+
+
+>>>>>>> 4787f99b9d7e09f695eee8c4945bea4637391e5c
     }
 
     private static Graph<String, Number> createGraph(DynamicTree dt) {
@@ -170,4 +185,8 @@ public class GraphPanel {
     }
 
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 4787f99b9d7e09f695eee8c4945bea4637391e5c

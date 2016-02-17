@@ -21,6 +21,10 @@ public class DynamicTreeNode {
         child.setParent(this);
     }
 
+    @Override
+    public String toString(){
+        return name;
+    }
     public void setParent(DynamicTreeNode parent){
         this.parent=parent;
     }

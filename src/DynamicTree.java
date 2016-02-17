@@ -4,6 +4,7 @@ import java.io.*;
 import org.w3c.dom.*;
 import javax.xml.parsers.*;
 import java.util.ArrayList;
+
 import java.util.HashMap;
 
 /**
@@ -29,6 +30,7 @@ public class DynamicTree {
         this.listofUser = new ArrayList<String>();
         this.size=0;
         this.testDatabase=new HashMap<String, DynamicTreeNode>();
+
     }
 
 
@@ -37,6 +39,7 @@ public class DynamicTree {
         this.listofUser = new ArrayList<String>();
         this.root = root;
         this.size=0;
+
         this.testDatabase=new HashMap<String, DynamicTreeNode>();
     }
 
@@ -370,6 +373,10 @@ public class DynamicTree {
         dt.printUpdateCost("2602");
 
 //*/
+
+
+
+
     }
 
 
