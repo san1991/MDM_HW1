@@ -370,6 +370,33 @@ public class DynamicTree {
         }else return null;
     }
 
+    public void updateDatabase_forwarding_address(){
+
+
+    }
+
+    public void updateDatabase_forwarding_pointer(String user, int level, DynamicTreeNode oldLocation,DynamicTreeNode newLocation){
+
+        DynamicTreeNode addingEnd=newLocation;
+        DynamicTreeNode addingChild=newLocation;
+        DynamicTreeNode deletingEnd=oldLocation;
+        DynamicTreeNode deletingChild=oldLocation;
+        for(int i=0;i<level;i++){
+            addingEnd.database.put(user,addingChild);
+            String child=addingEnd.getName();
+            addingEnd=addingEnd.parent;
+            addingChild=getNodeByName(child);
+
+            deletingEnd.database.remove(user);
+            
+
+
+        }
+
+
+
+    }
+
 
     public static void main(String[] arg) {
 
