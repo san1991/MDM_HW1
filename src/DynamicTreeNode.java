@@ -35,4 +35,17 @@ public class DynamicTreeNode {
     public void addUsers(String phoneNumber, Object node){
         this.database.put(phoneNumber, node);
     }
+
+    public boolean isInLine(DynamicTreeNode leafnode){
+
+        boolean result =false;
+
+        while(leafnode.parent!=null){
+            if(this.equals(leafnode))return true;
+            leafnode=leafnode.parent;
+        }
+        return result;
+    }
+
+
 }
