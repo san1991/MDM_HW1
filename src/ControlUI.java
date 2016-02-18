@@ -296,7 +296,9 @@ public class ControlUI extends javax.swing.JFrame {
 
         jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder("Change Mode"));
 
-        jComboBox_ChangeMode.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Database Values", "Forwarding Pointers", "Actual Pointers", "Replication" }));
+        jComboBox_ChangeMode.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Database Values", "Forwarding Pointers",
+                "Database with Forwarding Pointers", "Actual Pointer with Forwarding Pointers",
+        "Database with Replication","Actual Pointer Replication"}));
 
         jButton_CM_Change.setText("Change");
         jButton_CM_Change.addActionListener(new java.awt.event.ActionListener() {
@@ -504,16 +506,33 @@ public class ControlUI extends javax.swing.JFrame {
             traceBaseStationChangeMovement(updatedNodes, deletedNodes);
 
         }else if (Constants.CURRENT_MODE==Constants.MODE_DATABASE_VALUES){
-            System.out.println("Using Actual Database Value Mode");
+            System.out.println("Changing Base Station using Actual Database Value Mode");
             completeTree.updateDatabase_databseValue(host,newBaseStation,newBaseStation,false,updatedNodes,deletedNodes);
             traceBaseStationChangeMovement(updatedNodes, deletedNodes);
 
-        }else if (Constants.CURRENT_MODE.toString()==Constants.MODE_FORWARD_POINTERS){
+        }else if (Constants.CURRENT_MODE.toString()==Constants.MODE_DATABASE_FORWARD_POINTERS){
 
-        }else if (Constants.CURRENT_MODE.toString()==Constants.MODE_REPLICATION){
+            System.out.println("Changing Base Station using Forward Pointers");
+            
+            completeTree.updateDatabase_forwarding_pointer(host,completeTree.findForwardingLevel(host,oldBaseStation),oldBaseStation,newBaseStation,updatedNodes,deletedNodes);
+            traceBaseStationChangeMovement(updatedNodes, deletedNodes);
+
+        }else if (Constants.CURRENT_MODE.toString()==Constants.MODE_POINTER_FORWARD_POINTERS){
+            System.out.println("Changing Base Station using "+ Constants.MODE_POINTER_FORWARD_POINTERS);
+
+        }else if (Constants.CURRENT_MODE.toString()==Constants.MODE_REPLICATION_DATABASE){
+            System.out.println("Changing Base Station using "+Constants.MODE_REPLICATION_DATABASE);
+
+        }else if (Constants.CURRENT_MODE.toString()==Constants.MODE_REPLICATION_POINTER){
+            System.out.println("Changing Base Station using "+Constants.MODE_REPLICATION_POINTER);
 
         }
     }
+
+
+
+
+
 
     ArrayList<DynamicTreeNode> updatedNodes =null;
     ArrayList<DynamicTreeNode> deletedNodes=null;
@@ -580,62 +599,7 @@ public class ControlUI extends javax.swing.JFrame {
 
     }
 
-    /*
-    private void changeBaseStationColor(DynamicTreeNode baseStation){
-
-        child=baseStation;
-        parent=child.parent;
-
-        child.changeColor=true;
-        graphViewer.repaint();
-
-        new Thread() {
-            @Override
-            public void run() {
-
-                while (parent!=null){
-
-                    try {
-                        Thread.sleep(1000);
-                    } catch (Exception e) {
-                    }
-                    child.changeColor=false;
-                    parent.changeColor=true;
-                    child=parent;
-                    parent=parent.parent;
-                    graphViewer.repaint();
-
-                }
-                try {
-                    sleep(1000);
-                    child.changeColor=false;
-                    graphViewer.repaint();
-                }catch (Exception ex){
-
-                }
-
-
-
-            }
-        }.start();
-
-
-        /*
-        new Thread() {
-            @Override
-            public void run() {
-
-                try {
-                    sleep(10000);
-                } catch (Exception e) {
-                }
-            }
-        }.start();
-
-
-    }
-
-    */
+    
 
     // once host moves from one Base Station to Another need to change text in jTextArea_MobileHosts and jComboBox_CHL_Host
 
@@ -646,13 +610,21 @@ public class ControlUI extends javax.swing.JFrame {
     private void initializeChangeMode(){
         if (Constants.CURRENT_MODE==Constants.MODE_ACTUAL_POINTERS){
             completeTree.initialDatabase_Pointer(Constants.USER_FILE);
-            System.out.println(Constants.CURRENT_MODE);
+
         }else if (Constants.CURRENT_MODE==Constants.MODE_DATABASE_VALUES){
             completeTree.initialDatabase_Value(Constants.USER_FILE);
 
-        }else if (Constants.CURRENT_MODE.toString()==Constants.MODE_FORWARD_POINTERS){
+        }else if (Constants.CURRENT_MODE.toString()==Constants.MODE_DATABASE_FORWARD_POINTERS){
+            completeTree.initialDatabase_Value(Constants.USER_FILE);
 
-        }else if (Constants.CURRENT_MODE.toString()==Constants.MODE_REPLICATION){
+        }else if (Constants.CURRENT_MODE.toString()==Constants.MODE_POINTER_FORWARD_POINTERS){
+            completeTree.initialDatabase_Pointer(Constants.USER_FILE);
+
+        }else if (Constants.CURRENT_MODE.toString()==Constants.MODE_REPLICATION_DATABASE){
+            completeTree.initialDatabase_Value(Constants.USER_FILE);
+
+        }else if (Constants.CURRENT_MODE.toString()==Constants.MODE_REPLICATION_POINTER){
+            completeTree.initialDatabase_Pointer(Constants.USER_FILE);
 
         }
     }

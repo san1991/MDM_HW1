@@ -5,9 +5,11 @@ import java.io.File;
  */
 public class Constants {
     public static String MODE_DATABASE_VALUES="Database Values";
-    public static String MODE_FORWARD_POINTERS="Forwarding Pointers";
     public static String MODE_ACTUAL_POINTERS="Actual Pointers";
-    public static String MODE_REPLICATION="Replication";
+    public static String MODE_DATABASE_FORWARD_POINTERS="Database with Forwarding Pointers";
+    public static String MODE_POINTER_FORWARD_POINTERS="Actual Pointer with Forwarding Pointers";
+    public static String MODE_REPLICATION_DATABASE="Database with Replication";
+    public static String MODE_REPLICATION_POINTER="Actual Pointer Replication";
 
 
     public static File TOPOLOGY_FILE = new File("Topology_xc.xml");
