@@ -21,5 +21,6 @@ public class Constants {
     public static int NODE_COLOR_DEFAULT=0;
     public static int NODE_COLOR_DELETED=1;
     public static int NODE_COLOR_UPDATED=2;
+    public static int NODE_COLOR_CALLTRACE=3;
 
 }

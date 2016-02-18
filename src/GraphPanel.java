@@ -108,8 +108,10 @@ public class GraphPanel {
                     return Color.YELLOW;
                 else if (h.nodeColor==Constants.NODE_COLOR_UPDATED)
                     return Color.GREEN;
-                else    // if (h.nodeColor==Constants.NODE_COLOR_DELETED)
+                else if (h.nodeColor==Constants.NODE_COLOR_DELETED)
                     return Color.RED;
+                else    // color for call trace
+                    return Color.MAGENTA;
 
             }
         };

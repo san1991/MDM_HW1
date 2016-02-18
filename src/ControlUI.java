@@ -599,7 +599,7 @@ public class ControlUI extends javax.swing.JFrame {
 
     }
 
-    
+
 
     // once host moves from one Base Station to Another need to change text in jTextArea_MobileHosts and jComboBox_CHL_Host
 
