@@ -175,6 +175,7 @@ public class DynamicTree {
                                             //dt.addUsers(userNum, dt);
                                             //System.out.println(user.getFirstChild().getNodeValue());
 
+
                                             updateDatabase_actualPointer(userNum, dt, dt, true,new ArrayList<DynamicTreeNode>(),new ArrayList<DynamicTreeNode>());
                                             initialUserMobilityMetric(userNum);
                                             initialUserCallMetric(userNum);
