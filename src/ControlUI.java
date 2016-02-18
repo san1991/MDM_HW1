@@ -5,11 +5,8 @@
  */
 
 //import com.javafx.tools.doclets.internal.toolkit.builders.ConstantsSummaryBuilder;
-import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
-import org.apache.commons.collections15.Transformer;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -387,7 +384,14 @@ public class ControlUI extends javax.swing.JFrame {
         DynamicTreeNode newBaseStation=(DynamicTreeNode)jComboBox_CHL_NewBaseStation.getSelectedItem();
         String host=jComboBox_CHL_Host.getSelectedItem().toString();
 
+        System.out.println("host: "+host+" is moving from Base Station "+oldBaseStation+" to BaseStation "+newBaseStation);
         changeBaseStation(oldBaseStation,newBaseStation,host);
+
+
+        //updating the view in the UI component after Host moves from old to new base station
+
+        updatejComboBox_CHL_Host(oldBaseStation);
+        updatejTextArea_MobileHosts();
 
 
     }
@@ -395,18 +399,8 @@ public class ControlUI extends javax.swing.JFrame {
     private void jComboBox_BaseStationsActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
 
-        DynamicTreeNode selectedBaseStation= (DynamicTreeNode)jComboBox_BaseStations.getSelectedItem();
-        HashMap<String, Object> mobileHosts = selectedBaseStation.database;
-        String hosts= new String();
+        updatejTextArea_MobileHosts();
 
-        Iterator entries = mobileHosts.entrySet().iterator();
-
-        while (entries.hasNext()) {
-            Map.Entry thisEntry = (Map.Entry) entries.next();
-
-            hosts=hosts+thisEntry.getKey().toString()+"\n";
-        }
-        jTextArea_MobileHosts.setText(hosts);
 
     }
 
@@ -430,6 +424,22 @@ public class ControlUI extends javax.swing.JFrame {
         // TODO add your handling code here:
 
         DynamicTreeNode selectedBaseStation= (DynamicTreeNode)jComboBox_CHL_OldBaseStation.getSelectedItem();
+
+        updatejComboBox_CHL_Host(selectedBaseStation);
+        updateCHLNewBaseStations(selectedBaseStation);
+
+
+    }
+
+
+
+
+
+
+    //*********************************************  custom code starts here  ***********************************//
+
+    private void updatejComboBox_CHL_Host(DynamicTreeNode selectedBaseStation){
+
         HashMap<String, Object> mobileHosts = selectedBaseStation.database;
 
 
@@ -440,14 +450,24 @@ public class ControlUI extends javax.swing.JFrame {
             jComboBox_CHL_Host.addItem(thisEntry.getKey());
         }
 
-        updateCHLNewBaseStations(selectedBaseStation);
+    }
+    private void updatejTextArea_MobileHosts(){
 
+        DynamicTreeNode selectedBaseStation= (DynamicTreeNode)jComboBox_BaseStations.getSelectedItem();
+        HashMap<String, Object> mobileHosts = selectedBaseStation.database;
+        String hosts= new String();
 
+        Iterator entries = mobileHosts.entrySet().iterator();
+
+        while (entries.hasNext()) {
+            Map.Entry thisEntry = (Map.Entry) entries.next();
+
+            hosts=hosts+thisEntry.getKey().toString()+"\n";
+        }
+        jTextArea_MobileHosts.setText(hosts);
     }
 
 
-
-    // custom code starts here
 
     public void addBaseStationsInDropdown(){
 
@@ -470,10 +490,6 @@ public class ControlUI extends javax.swing.JFrame {
         }
     }
 
-    DynamicTreeNode child;
-    DynamicTreeNode parent;
-
-
     // this function calls necessary functions of DynamicTree class to change the Base Station for an user
     private void changeBaseStation(DynamicTreeNode oldBaseStation, DynamicTreeNode newBaseStation, String host){
 
@@ -483,8 +499,14 @@ public class ControlUI extends javax.swing.JFrame {
 
         if (Constants.CURRENT_MODE==Constants.MODE_ACTUAL_POINTERS){
 
-        }else if (Constants.CURRENT_MODE==Constants.MODE_DATABASE_VALUES){
+            System.out.println("Using Actual Pointer Mode");
+            completeTree.updateDatabase_actualPointer(host, newBaseStation, newBaseStation, true, updatedNodes, deletedNodes);
+            traceBaseStationChangeMovement(updatedNodes, deletedNodes);
 
+        }else if (Constants.CURRENT_MODE==Constants.MODE_DATABASE_VALUES){
+            System.out.println("Using Actual Database Value Mode");
+            completeTree.updateDatabase_databseValue(host,newBaseStation,newBaseStation,false,updatedNodes,deletedNodes);
+            traceBaseStationChangeMovement(updatedNodes, deletedNodes);
 
         }else if (Constants.CURRENT_MODE.toString()==Constants.MODE_FORWARD_POINTERS){
 
@@ -493,7 +515,72 @@ public class ControlUI extends javax.swing.JFrame {
         }
     }
 
+    ArrayList<DynamicTreeNode> updatedNodes =null;
+    ArrayList<DynamicTreeNode> deletedNodes=null;
 
+    private void traceBaseStationChangeMovement(ArrayList<DynamicTreeNode> un, ArrayList<DynamicTreeNode> dn){
+
+        updatedNodes =un;
+        deletedNodes=dn;
+
+
+
+        new Thread(){
+            @Override
+            public void run(){
+
+
+                if (updatedNodes != null && !updatedNodes.isEmpty()){
+
+                    for (DynamicTreeNode node: updatedNodes){
+                        node.nodeColor=Constants.NODE_COLOR_UPDATED;
+
+                        try {
+                            sleep(1000);
+                        }catch (Exception ex){
+                            ex.printStackTrace();
+                        }
+                        graphViewer.repaint();
+                        node.nodeColor=Constants.NODE_COLOR_DEFAULT;
+
+                    }
+
+                    graphViewer.repaint();
+
+
+                }
+
+                if (deletedNodes!=null && !deletedNodes.isEmpty()){
+
+                    for (DynamicTreeNode node: deletedNodes){
+                        node.nodeColor=Constants.NODE_COLOR_DELETED;
+
+                        try {
+                            sleep(1000);
+                        }catch (Exception ex){
+                            ex.printStackTrace();
+                        }
+
+                        graphViewer.repaint();
+                        node.nodeColor=Constants.NODE_COLOR_DEFAULT;
+
+                    }
+                    graphViewer.repaint();
+
+                }
+
+                updatedNodes=null;
+                deletedNodes=null;
+
+
+            }
+
+        }.start();
+
+
+    }
+
+    /*
     private void changeBaseStationColor(DynamicTreeNode baseStation){
 
         child=baseStation;
@@ -544,12 +631,18 @@ public class ControlUI extends javax.swing.JFrame {
                 }
             }
         }.start();
-        */
-
-
 
 
     }
+
+    */
+
+    // once host moves from one Base Station to Another need to change text in jTextArea_MobileHosts and jComboBox_CHL_Host
+
+    private void updateVierOnHostMovement(){
+
+    }
+
     private void initializeChangeMode(){
         if (Constants.CURRENT_MODE==Constants.MODE_ACTUAL_POINTERS){
             completeTree.initialDatabase_Pointer(Constants.USER_FILE);

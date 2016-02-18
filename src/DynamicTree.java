@@ -155,7 +155,7 @@ public class DynamicTree {
                                             //System.out.println(user.getFirstChild().getNodeValue());
                                             if (dt.parent != null)
                                                 updateDatabase_actualPointer(userNum, dt, dt, true,new ArrayList<DynamicTreeNode>(),new ArrayList<DynamicTreeNode>());
-                                                updateUserMobilityMetric(userNum,0);
+                                                //updateUserMobilityMetric(userNum,0);
 
                                                 this.testDatabase.put(userNum,dt);
                                         }

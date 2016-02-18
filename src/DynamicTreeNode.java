@@ -6,8 +6,7 @@ public class DynamicTreeNode {
     public DynamicTreeNode parent;
     public List<DynamicTreeNode> children;
     public HashMap<String, Object> database;
-    public boolean changeColor=false;
-
+    public int nodeColor;
     private String name;
 
 
@@ -15,6 +14,7 @@ public class DynamicTreeNode {
         this.name=name;
         this.children=new ArrayList<DynamicTreeNode>();
         this.database=new HashMap<String, Object>();
+        this.nodeColor=Constants.NODE_COLOR_DEFAULT;
     }
 
     public void addChild(DynamicTreeNode child){

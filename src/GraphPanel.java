@@ -101,12 +101,16 @@ public class GraphPanel {
                 //else return circle;
             }
         };
+
         Transformer<DynamicTreeNode,Paint> vertexColor = new Transformer<DynamicTreeNode,Paint>() {
             public Paint transform(DynamicTreeNode h) {
-                if(h.changeColor)
+                if(h.nodeColor==Constants.NODE_COLOR_DEFAULT)
+                    return Color.YELLOW;
+                else if (h.nodeColor==Constants.NODE_COLOR_UPDATED)
                     return Color.GREEN;
-                else
+                else    // if (h.nodeColor==Constants.NODE_COLOR_DELETED)
                     return Color.RED;
+
             }
         };
 

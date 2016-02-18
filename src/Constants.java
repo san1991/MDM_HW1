@@ -15,4 +15,9 @@ public class Constants {
 
     public static String CURRENT_MODE;
 
+    //for node coloring
+    public static int NODE_COLOR_DEFAULT=0;
+    public static int NODE_COLOR_DELETED=1;
+    public static int NODE_COLOR_UPDATED=2;
+
 }
