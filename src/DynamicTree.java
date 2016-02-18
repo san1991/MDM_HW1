@@ -5,12 +5,16 @@ import java.io.*;
 import org.w3c.dom.*;
 
 import javax.xml.parsers.*;
+
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 
 import java.util.HashMap;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingDeque;
+
+import java.util.*;
+
 
 /**
  * Created by Administrator on 2/8/2016.
@@ -524,8 +528,59 @@ public class DynamicTree {
         return result;
     }
 
-    public void replication(String user, int maxRepli,int maxLevel,int Smax,int Smin,DynamicTreeNode current ){
+    public void replication(String user, int maxRepli,int maxLevel,int Smax,int Smin,DynamicTreeNode current,ArrayList<DynamicTreeNode> levelNodes,
+                            ArrayList<DynamicTreeNode> addReplication,ArrayList<DynamicTreeNode> deleteReplication){
 
+        if(maxLevel>=0) {
+            ArrayList<DynamicTreeNode> checking = new ArrayList<DynamicTreeNode>();
+
+            for (DynamicTreeNode dtn : levelNodes) {
+                if (!dtn.isInLine(current) && dtn.database.containsKey(user)) {
+                    dtn.database.remove(user);
+                    System.out.println("delete " + user + "'s information from " + dtn.getName());
+                    deleteReplication.add(dtn);
+                }
+                if (this.getAggCMR(user, dtn) > Smax) {
+                    checking.add(dtn);
+                }
+            }
+            if (checking.size() != 0) {
+                final String u = user;
+                Collections.sort(checking, new Comparator<DynamicTreeNode>() {
+                    @Override
+                    public int compare(DynamicTreeNode o1, DynamicTreeNode o2) {
+                        if (getAggCMR(u, o1) == getAggCMR(u, o2))
+                            return 0;
+                        return getAggCMR(u, o1) < getAggCMR(u, o2) ? -1 : 1;
+                    }
+                });
+
+                if (maxRepli >= checking.size()) {
+                    for (DynamicTreeNode ln : checking) {
+                        ln.database.put(user, current);
+                        System.out.println("Replicating " + user + "'s information from " + current.getName() + " to node: " + ln.getName());
+                        addReplication.add(ln);
+                    }
+                    ArrayList<DynamicTreeNode> nextLevel = new ArrayList<DynamicTreeNode>();
+                    for (DynamicTreeNode levelNode : levelNodes) {
+                        if (levelNode.parent != null) {
+                            if (!nextLevel.contains(levelNode.parent)) nextLevel.add(levelNode.parent);
+                        }
+                    }
+
+                    replication(user, maxRepli - checking.size(), maxLevel - 1, Smax, Smin, current, nextLevel, addReplication, deleteReplication);
+
+
+                } else {
+                    for (int i = 0; i < maxRepli; i++) {
+                        checking.get(i).database.put(user, current);
+                        System.out.println("Replicating " + user + "'s information from " + current.getName() + " to node: " + checking.get(i).getName());
+                        addReplication.add(checking.get(i));
+                    }
+                }
+
+            }
+        }
     }
 
 
@@ -582,13 +637,31 @@ public class DynamicTree {
         dt.resetCounter();
         System.out.println("Starting move 2603 from PA to " + dt.leafNodes.get(34).getName());
         DynamicTreeNode callerLocation=dt.getCallerLocation("2603");
-        dt.updateUserCallMetric("2603",dt.leafNodes.get(15),50);
+        dt.updateUserCallMetric("2603",dt.leafNodes.get(4),50);
         dt.updateDatabase_forwarding_address("2603",dt.findForwardingLevel("2603",callerLocation),callerLocation,dt.leafNodes.get(34),
                 new ArrayList<DynamicTreeNode>(),new ArrayList<DynamicTreeNode>());
 
         dt.printUpdateCost("2603");
 
 
+        dt.initialDatabase_Pointer(userFile);
+        dt.resetCounter();
+        System.out.println("Testing replication for user 3601");
+        System.out.println("increase call number from node: "+ dt.leafNodes.get(8).getName());
+        dt.updateUserCallMetric("3601",dt.leafNodes.get(8),100);
+
+        dt.replication("3601",3,1,10,5,dt.getCallerLocation("3601"),dt.leafNodes,
+                new ArrayList<DynamicTreeNode>(),new ArrayList<DynamicTreeNode>());
+
+        System.out.println("increase call number from node: "+ dt.leafNodes.get(23).getName());
+        dt.updateUserCallMetric("3601",dt.leafNodes.get(23),100);
+        dt.replication("3601",3,1,10,5,dt.getCallerLocation("3601"),dt.leafNodes,
+                new ArrayList<DynamicTreeNode>(),new ArrayList<DynamicTreeNode>());
+
+        System.out.println("increase call number from node: "+ dt.leafNodes.get(38).getName());
+        dt.updateUserCallMetric("3601",dt.leafNodes.get(38),100);
+        dt.replication("3601",3,1,10,5,dt.getCallerLocation("3601"),dt.leafNodes,
+                new ArrayList<DynamicTreeNode>(),new ArrayList<DynamicTreeNode>());
 
     }
 
