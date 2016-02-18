@@ -147,6 +147,7 @@ public class GraphPanel {
 
 
         //code for mode selection and user interaction
+        dt.sortLeafNodes();
 
         ControlUI controlUI = new ControlUI(dt,vv2);
         controlUI.addBaseStationsInDropdown();
@@ -154,6 +155,7 @@ public class GraphPanel {
 
 
         // code for mode simulation
+
 
 
         //for actual pointers

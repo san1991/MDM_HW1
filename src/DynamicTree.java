@@ -45,8 +45,19 @@ public class DynamicTree {
         this.user_mobility_count= new HashMap<>();
         this.user_call_count= new HashMap<>();
 
+
+
+
     }
 
+    public void sortLeafNodes(){
+        Collections.sort(this.leafNodes,new Comparator<DynamicTreeNode>() {
+            @Override
+            public int compare(DynamicTreeNode o1, DynamicTreeNode o2) {
+                return o1.toString().compareTo(o2.toString());
+            }
+        });
+    }
 
     public DynamicTree(DynamicTreeNode root) {
         this.leafNodes = new ArrayList<DynamicTreeNode>();
@@ -584,6 +595,17 @@ public class DynamicTree {
     }
 
 
+    public void makeCall(DynamicTreeNode srcBaseStation, String callee, ArrayList<DynamicTreeNode> baseStations){
+
+        baseStations.add(srcBaseStation);
+
+        if (srcBaseStation.database.containsKey(callee) && !(srcBaseStation.database.get(callee).equals(srcBaseStation))){
+            makeCall((DynamicTreeNode)srcBaseStation.database.get(callee), callee,baseStations);
+        }else if (!srcBaseStation.database.containsKey(callee) && srcBaseStation.parent!=null){
+            makeCall(srcBaseStation.parent,callee,baseStations);
+        }
+
+    }
 
 
 

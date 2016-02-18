@@ -296,7 +296,7 @@ public class ControlUI extends javax.swing.JFrame {
 
         jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder("Change Mode"));
 
-        jComboBox_ChangeMode.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Database Values", "Forwarding Pointers",
+        jComboBox_ChangeMode.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Database Values", "Actual Pointers",
                 "Database with Forwarding Pointers", "Actual Pointer with Forwarding Pointers",
         "Database with Replication","Actual Pointer Replication"}));
 
@@ -392,6 +392,7 @@ public class ControlUI extends javax.swing.JFrame {
 
         //updating the view in the UI component after Host moves from old to new base station
 
+
         updatejComboBox_CHL_Host(oldBaseStation);
         updatejTextArea_MobileHosts();
 
@@ -418,6 +419,7 @@ public class ControlUI extends javax.swing.JFrame {
 
     private void jButton_GC_CallActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
+        traceCall();
 
 
     }
@@ -492,11 +494,20 @@ public class ControlUI extends javax.swing.JFrame {
         }
     }
 
+
+    //replication(String user, int maxRepli,int maxLevel,int Smax,int Smin,DynamicTreeNode current,ArrayList<DynamicTreeNode> levelNodes,
+            //ArrayList<DynamicTreeNode> addReplication,ArrayList<DynamicTreeNode> deleteReplication){
     // this function calls necessary functions of DynamicTree class to change the Base Station for an user
     private void changeBaseStation(DynamicTreeNode oldBaseStation, DynamicTreeNode newBaseStation, String host){
 
         ArrayList<DynamicTreeNode> updatedNodes= new ArrayList<>();
         ArrayList<DynamicTreeNode> deletedNodes= new ArrayList<>();
+
+
+        int maxReplication=3;
+        int maxLevel=1;
+        int Smax=10;
+        int Smin=5;
 
 
         if (Constants.CURRENT_MODE==Constants.MODE_ACTUAL_POINTERS){
@@ -519,15 +530,31 @@ public class ControlUI extends javax.swing.JFrame {
 
         }else if (Constants.CURRENT_MODE.toString()==Constants.MODE_POINTER_FORWARD_POINTERS){
             System.out.println("Changing Base Station using "+ Constants.MODE_POINTER_FORWARD_POINTERS);
+            completeTree.updateDatabase_forwarding_address(host,completeTree.findForwardingLevel(host,oldBaseStation),oldBaseStation,newBaseStation,updatedNodes,deletedNodes);
+            traceBaseStationChangeMovement(updatedNodes, deletedNodes);
+
 
         }else if (Constants.CURRENT_MODE.toString()==Constants.MODE_REPLICATION_DATABASE){
             System.out.println("Changing Base Station using "+Constants.MODE_REPLICATION_DATABASE);
+            completeTree.replication(host,maxReplication,maxLevel,Smax,Smin,newBaseStation,completeTree.leafNodes,updatedNodes,deletedNodes);
+
+            traceBaseStationChangeMovement(updatedNodes, deletedNodes);
+
 
         }else if (Constants.CURRENT_MODE.toString()==Constants.MODE_REPLICATION_POINTER){
             System.out.println("Changing Base Station using "+Constants.MODE_REPLICATION_POINTER);
 
+            System.out.println("Changing Base Station using "+Constants.MODE_REPLICATION_DATABASE);
+            completeTree.replication(host,maxReplication,maxLevel,Smax,Smin,newBaseStation,completeTree.leafNodes,updatedNodes,deletedNodes);
+            traceBaseStationChangeMovement(updatedNodes, deletedNodes);
+
+
+            traceBaseStationChangeMovement(updatedNodes, deletedNodes);
+
         }
+        completeTree.testDatabase.put(host,newBaseStation);
     }
+
 
 
 
@@ -536,6 +563,63 @@ public class ControlUI extends javax.swing.JFrame {
 
     ArrayList<DynamicTreeNode> updatedNodes =null;
     ArrayList<DynamicTreeNode> deletedNodes=null;
+
+
+    private void traceCall(){
+
+
+        updatedNodes=new ArrayList<>();
+
+        String caller = jTextField_GC_SrcHost.getText();
+        String callee=jTextField_GC_DstHost.getText();
+
+        DynamicTreeNode caller_BaseStation = completeTree.getCallerLocation(caller);
+
+        completeTree.makeCall(caller_BaseStation,callee,updatedNodes);
+
+        new Thread(){
+            @Override
+            public void run(){
+
+
+                if (updatedNodes != null && !updatedNodes.isEmpty()){
+
+                    for (DynamicTreeNode node: updatedNodes){
+                        node.nodeColor=Constants.NODE_COLOR_CALLTRACE;
+
+                        try {
+                            sleep(1000);
+                        }catch (Exception ex){
+                            ex.printStackTrace();
+                        }
+                        graphViewer.repaint();
+                        //node.nodeColor=Constants.NODE_COLOR_DEFAULT;
+
+                    }
+
+                    try {
+                        sleep(3000);
+                    }catch (Exception ex){
+                        ex.printStackTrace();
+                    }
+                    restoreNodeDefaultColor(updatedNodes);
+                    graphViewer.repaint();
+
+
+                }
+
+            }
+
+        }.start();
+
+
+    }
+
+    private void restoreNodeDefaultColor(ArrayList<DynamicTreeNode> nodeList){
+        for (DynamicTreeNode node:nodeList){
+            node.nodeColor=Constants.NODE_COLOR_DEFAULT;
+        }
+    }
 
     private void traceBaseStationChangeMovement(ArrayList<DynamicTreeNode> un, ArrayList<DynamicTreeNode> dn){
 
@@ -603,9 +687,7 @@ public class ControlUI extends javax.swing.JFrame {
 
     // once host moves from one Base Station to Another need to change text in jTextArea_MobileHosts and jComboBox_CHL_Host
 
-    private void updateVierOnHostMovement(){
 
-    }
 
     private void initializeChangeMode(){
         if (Constants.CURRENT_MODE==Constants.MODE_ACTUAL_POINTERS){
