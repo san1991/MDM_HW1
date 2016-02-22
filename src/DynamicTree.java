@@ -447,13 +447,24 @@ public class DynamicTree {
                 this.total = this.add + this.delete + this.update;
             }else break;
         }
+
+
         addingChild = getNodeByName(child);
+        if(level==0){
+            addingChild.database.put(user,addingChild);
+            updatedNodes.add(addingChild);
+            System.out.println("adding in node: "+addingChild.getName());
+            this.add++;
+        }
         deletingChild = getNodeByName(dChild);
         deletingChild.database.put(user,addingChild);
+
         updatedNodes.add(deletingChild);
-        updatedNodes.add(addingChild);
+
         System.out.println("updating in node: "+deletingChild.getName());
+
         this.update++;
+
         this.total = this.add + this.delete + this.update;
 
     }
@@ -487,9 +498,14 @@ public class DynamicTree {
             }else break;
         }
 
+        if(level==0) {
+            addingEnd.database.put(user, addingChild);
+            updatedNodes.add(addingEnd);
+            System.out.println("adding in node: " + addingEnd.getName());
+            this.add++;
+        }
         deletingEnd.database.put(user,addingEnd);
         updatedNodes.add(deletingEnd);
-        updatedNodes.add(addingEnd);
         System.out.println("updating in node: "+deletingEnd.getName());
         this.update++;
         this.total = this.add + this.delete + this.update;
@@ -660,7 +676,7 @@ public class DynamicTree {
         System.out.println("Starting move 2603 from PA to " + dt.leafNodes.get(34).getName());
         DynamicTreeNode callerLocation=dt.getCallerLocation("2603");
         dt.updateUserCallMetric("2603",dt.leafNodes.get(4),50);
-        dt.updateDatabase_forwarding_address("2603",dt.findForwardingLevel("2603",callerLocation),callerLocation,dt.leafNodes.get(34),
+        dt.updateDatabase_forwarding_pointer("2603",dt.findForwardingLevel("2603",callerLocation),callerLocation,dt.leafNodes.get(34),
                 new ArrayList<DynamicTreeNode>(),new ArrayList<DynamicTreeNode>());
 
         dt.printUpdateCost("2603");

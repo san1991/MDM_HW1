@@ -451,7 +451,9 @@ public class ControlUI extends javax.swing.JFrame {
         jComboBox_CHL_Host.removeAllItems();
         while (entries.hasNext()) {
             Map.Entry thisEntry = (Map.Entry) entries.next();
-            jComboBox_CHL_Host.addItem(thisEntry.getKey());
+            if(thisEntry.getValue().equals(selectedBaseStation)) {
+                jComboBox_CHL_Host.addItem(thisEntry.getKey());
+            }
         }
 
     }
@@ -466,7 +468,9 @@ public class ControlUI extends javax.swing.JFrame {
         while (entries.hasNext()) {
             Map.Entry thisEntry = (Map.Entry) entries.next();
 
-            hosts=hosts+thisEntry.getKey().toString()+"\n";
+            if(thisEntry.getValue().equals(selectedBaseStation)) {
+                hosts = hosts + thisEntry.getKey().toString() + "\n";
+            }
         }
         jTextArea_MobileHosts.setText(hosts);
     }
@@ -638,13 +642,14 @@ public class ControlUI extends javax.swing.JFrame {
                     for (DynamicTreeNode node: updatedNodes){
                         node.nodeColor=Constants.NODE_COLOR_UPDATED;
 
+
+                        graphViewer.repaint();
                         try {
                             sleep(1000);
                         }catch (Exception ex){
                             ex.printStackTrace();
                         }
-                        graphViewer.repaint();
-                        node.nodeColor=Constants.NODE_COLOR_DEFAULT;
+                        //node.nodeColor=Constants.NODE_COLOR_DEFAULT;
 
                     }
 
@@ -658,19 +663,30 @@ public class ControlUI extends javax.swing.JFrame {
                     for (DynamicTreeNode node: deletedNodes){
                         node.nodeColor=Constants.NODE_COLOR_DELETED;
 
+
+
+                        graphViewer.repaint();
                         try {
                             sleep(1000);
                         }catch (Exception ex){
                             ex.printStackTrace();
                         }
-
-                        graphViewer.repaint();
-                        node.nodeColor=Constants.NODE_COLOR_DEFAULT;
+                        //node.nodeColor=Constants.NODE_COLOR_DEFAULT;
 
                     }
                     graphViewer.repaint();
 
                 }
+
+                try {
+                    sleep(2000);
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                }
+                restoreNodeDefaultColor(updatedNodes);
+                restoreNodeDefaultColor(deletedNodes);
+
+                graphViewer.repaint();
 
                 updatedNodes=null;
                 deletedNodes=null;
