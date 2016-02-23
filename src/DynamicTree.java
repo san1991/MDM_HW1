@@ -22,6 +22,7 @@ import java.util.*;
 
 public class DynamicTree {
     public ArrayList<DynamicTreeNode> leafNodes;
+    public ArrayList<DynamicTreeNode> allNodes;
     public HashMap<String,DynamicTreeNode> testDatabase;
 
     public DynamicTreeNode root;
@@ -45,6 +46,7 @@ public class DynamicTree {
         this.user_mobility_count= new HashMap<>();
         this.user_call_count= new HashMap<>();
 
+        this.allNodes=new ArrayList<DynamicTreeNode>();
 
 
 
@@ -67,6 +69,7 @@ public class DynamicTree {
 
         this.testDatabase=new HashMap<String, DynamicTreeNode>();
 
+        this.allNodes=new ArrayList<DynamicTreeNode>();
         this.user_mobility_count= new HashMap<>();
         this.user_call_count= new HashMap<>();
     }
@@ -82,6 +85,7 @@ public class DynamicTree {
             user_call_count.put(MH, hostList);
         }
 
+        System.out.println("updating user "+MH+" call count. Call from "+mobileHost.getName()+" increase by "+i);
         hostList.put(mobileHost,(hostList.get(mobileHost)+i));
 
     }
@@ -135,6 +139,7 @@ public class DynamicTree {
     //help function setTopo to assign child nodes of the each nodes in the tree.
     public void setTopoHelper(DynamicTreeNode dn, Node n) {
         if (n.hasChildNodes()) {
+            this.allNodes.add(dn);
             NodeList nl = n.getChildNodes();
             int num = nl.getLength();
             for (int i = 0; i < num; i++) {
@@ -151,6 +156,7 @@ public class DynamicTree {
         } else {
 
             this.leafNodes.add(dn);
+            this.allNodes.add(dn);
             //dn.printName();
         }
 
@@ -281,6 +287,13 @@ public class DynamicTree {
 
     public DynamicTreeNode getNodeByName(String nodeName){
         for(DynamicTreeNode dtn:leafNodes){
+            if(dtn.getName().equals(nodeName))return dtn;
+        }
+        return null;
+    }
+
+    public DynamicTreeNode getAllNodeByName(String nodeName){
+        for(DynamicTreeNode dtn:allNodes){
             if(dtn.getName().equals(nodeName))return dtn;
         }
         return null;
@@ -434,34 +447,25 @@ public class DynamicTree {
                 updatedNodes.add(addingEnd);
 
                 addingEnd = addingEnd.parent;
-                addingChild = getNodeByName(child);
+                addingChild = getAllNodeByName(child);
                 this.add++;
                 this.total = this.add + this.delete + this.update;
-                System.out.println("deleting in node: "+deletingEnd.getName());
-                deletingEnd.database.remove(user);
-                deletedNodes.add(deletingEnd);
 
-                deletingEnd = deletingEnd.parent;
-
-                this.delete++;
-                this.total = this.add + this.delete + this.update;
             }else break;
         }
-
-
         addingChild = getNodeByName(child);
-        if(level==0){
-            addingChild.database.put(user,addingChild);
+        if(level==0) {
+            addingChild.database.put(user, addingChild);
             updatedNodes.add(addingChild);
-            System.out.println("adding in node: "+addingChild.getName());
+            System.out.println("adding in node: " + addingChild.getName() + " pointing to " + addingChild.getName());
             this.add++;
         }
-        deletingChild = getNodeByName(dChild);
+        deletingChild = getAllNodeByName(dChild);
         deletingChild.database.put(user,addingChild);
 
         updatedNodes.add(deletingChild);
 
-        System.out.println("updating in node: "+deletingChild.getName());
+        System.out.println("updating in node: "+deletingChild.getName()+" pointing to "+addingChild.getName());
 
         this.update++;
 
@@ -484,7 +488,8 @@ public class DynamicTree {
                 updatedNodes.add(addingEnd);
                 String child = addingEnd.getName();
                 addingEnd = addingEnd.parent;
-                addingChild = getNodeByName(child);
+                addingChild =getAllNodeByName(child) ;
+
                 this.add++;
                 this.total = this.add + this.delete + this.update;
                 System.out.println("deleting in node: "+deletingEnd.getName());
@@ -492,21 +497,21 @@ public class DynamicTree {
                 deletedNodes.add(deletingEnd);
                 String dChild = deletingEnd.getName();
                 deletingEnd = deletingEnd.parent;
-                deletingChild = getNodeByName(dChild);
+                deletingChild = getAllNodeByName(dChild);
                 this.delete++;
                 this.total = this.add + this.delete + this.update;
             }else break;
         }
 
-        if(level==0) {
+
             addingEnd.database.put(user, addingChild);
             updatedNodes.add(addingEnd);
-            System.out.println("adding in node: " + addingEnd.getName());
+            System.out.println("adding in node: " + addingEnd.getName() + " pointing to " + addingChild.getName());
             this.add++;
-        }
+
         deletingEnd.database.put(user,addingEnd);
         updatedNodes.add(deletingEnd);
-        System.out.println("updating in node: "+deletingEnd.getName());
+        System.out.println("updating in node: "+deletingEnd.getName()+" pointing to "+addingEnd.getName());
         this.update++;
         this.total = this.add + this.delete + this.update;
 
@@ -615,10 +620,16 @@ public class DynamicTree {
 
         baseStations.add(srcBaseStation);
 
+
+
         if (srcBaseStation.database.containsKey(callee) && !(srcBaseStation.database.get(callee).equals(srcBaseStation))){
+            System.out.println("find entry, go to the next location: "+((DynamicTreeNode)srcBaseStation.database.get(callee)).getName());
             makeCall((DynamicTreeNode)srcBaseStation.database.get(callee), callee,baseStations);
+
         }else if (!srcBaseStation.database.containsKey(callee) && srcBaseStation.parent!=null){
+            System.out.println("Not found in current node, go to the parent node: "+srcBaseStation.parent.getName());
             makeCall(srcBaseStation.parent,callee,baseStations);
+
         }
 
     }
@@ -673,14 +684,16 @@ public class DynamicTree {
 
         dt.initialDatabase_Pointer(userFile);
         dt.resetCounter();
-        System.out.println("Starting move 2603 from PA to " + dt.leafNodes.get(34).getName());
-        DynamicTreeNode callerLocation=dt.getCallerLocation("2603");
-        dt.updateUserCallMetric("2603",dt.leafNodes.get(4),50);
-        dt.updateDatabase_forwarding_pointer("2603",dt.findForwardingLevel("2603",callerLocation),callerLocation,dt.leafNodes.get(34),
+        System.out.println("Starting move 5303 from PA to " + dt.leafNodes.get(34).getName());
+        DynamicTreeNode callerLocation=dt.getCallerLocation("5303");
+        dt.updateUserCallMetric("5303",dt.getCallerLocation("2603"),50);
+        dt.updateDatabase_forwarding_pointer("5303",dt.findForwardingLevel("5303",callerLocation),callerLocation,dt.getCallerLocation("3902"),
                 new ArrayList<DynamicTreeNode>(),new ArrayList<DynamicTreeNode>());
 
         dt.printUpdateCost("2603");
 
+        ArrayList<DynamicTreeNode> bs=new ArrayList<DynamicTreeNode>();
+        dt.makeCall(dt.getCallerLocation("2603"),"5303",bs);
 
         dt.initialDatabase_Pointer(userFile);
         dt.resetCounter();

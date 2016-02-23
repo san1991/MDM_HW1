@@ -529,17 +529,19 @@ public class ControlUI extends javax.swing.JFrame {
 
             System.out.println("Changing Base Station using Forward Pointers");
             
-            completeTree.updateDatabase_forwarding_pointer(host,completeTree.findForwardingLevel(host,oldBaseStation),oldBaseStation,newBaseStation,updatedNodes,deletedNodes);
+            completeTree.updateDatabase_forwarding_address(host,completeTree.findForwardingLevel(host,oldBaseStation),oldBaseStation,newBaseStation,updatedNodes,deletedNodes);
             traceBaseStationChangeMovement(updatedNodes, deletedNodes);
 
         }else if (Constants.CURRENT_MODE.toString()==Constants.MODE_POINTER_FORWARD_POINTERS){
             System.out.println("Changing Base Station using "+ Constants.MODE_POINTER_FORWARD_POINTERS);
-            completeTree.updateDatabase_forwarding_address(host,completeTree.findForwardingLevel(host,oldBaseStation),oldBaseStation,newBaseStation,updatedNodes,deletedNodes);
+            completeTree.updateDatabase_forwarding_pointer(host,completeTree.findForwardingLevel(host,oldBaseStation),oldBaseStation,newBaseStation,updatedNodes,deletedNodes);
             traceBaseStationChangeMovement(updatedNodes, deletedNodes);
 
 
         }else if (Constants.CURRENT_MODE.toString()==Constants.MODE_REPLICATION_DATABASE){
             System.out.println("Changing Base Station using "+Constants.MODE_REPLICATION_DATABASE);
+            completeTree.updateDatabase_databseValue(host,newBaseStation,newBaseStation,false,updatedNodes,deletedNodes);
+            traceBaseStationChangeMovement(updatedNodes, deletedNodes);
             completeTree.replication(host,maxReplication,maxLevel,Smax,Smin,newBaseStation,completeTree.leafNodes,updatedNodes,deletedNodes);
 
             traceBaseStationChangeMovement(updatedNodes, deletedNodes);
@@ -549,9 +551,9 @@ public class ControlUI extends javax.swing.JFrame {
             System.out.println("Changing Base Station using "+Constants.MODE_REPLICATION_POINTER);
 
             System.out.println("Changing Base Station using "+Constants.MODE_REPLICATION_DATABASE);
-            completeTree.replication(host,maxReplication,maxLevel,Smax,Smin,newBaseStation,completeTree.leafNodes,updatedNodes,deletedNodes);
+            completeTree.updateDatabase_actualPointer(host, newBaseStation, newBaseStation, true, updatedNodes, deletedNodes);
             traceBaseStationChangeMovement(updatedNodes, deletedNodes);
-
+            completeTree.replication(host,maxReplication,maxLevel,Smax,Smin,newBaseStation,completeTree.leafNodes,updatedNodes,deletedNodes);
 
             traceBaseStationChangeMovement(updatedNodes, deletedNodes);
 
@@ -580,6 +582,7 @@ public class ControlUI extends javax.swing.JFrame {
         DynamicTreeNode caller_BaseStation = completeTree.getCallerLocation(caller);
 
         completeTree.makeCall(caller_BaseStation,callee,updatedNodes);
+        completeTree.updateUserCallMetric(callee,caller_BaseStation,50);
 
         new Thread(){
             @Override
@@ -643,12 +646,13 @@ public class ControlUI extends javax.swing.JFrame {
                         node.nodeColor=Constants.NODE_COLOR_UPDATED;
 
 
-                        graphViewer.repaint();
+
                         try {
                             sleep(1000);
                         }catch (Exception ex){
                             ex.printStackTrace();
                         }
+                        graphViewer.repaint();
                         //node.nodeColor=Constants.NODE_COLOR_DEFAULT;
 
                     }
@@ -665,12 +669,13 @@ public class ControlUI extends javax.swing.JFrame {
 
 
 
-                        graphViewer.repaint();
+
                         try {
                             sleep(1000);
                         }catch (Exception ex){
                             ex.printStackTrace();
                         }
+                        graphViewer.repaint();
                         //node.nodeColor=Constants.NODE_COLOR_DEFAULT;
 
                     }

@@ -41,7 +41,7 @@ public class DynamicTreeNode {
         boolean result =false;
 
         while(leafnode.parent!=null){
-            if(this.equals(leafnode))return true;
+            if(this.equals(leafnode))result= true;
             leafnode=leafnode.parent;
         }
         return result;
