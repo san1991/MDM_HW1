@@ -128,7 +128,8 @@ public class GraphPanel {
         vv2.getRenderContext().setVertexLabelTransformer(new ToStringLabeller());
         vv2.getRenderContext().setVertexShapeTransformer(vertexSize);
 
-        Color back = Color.decode("0xffffbb");
+        //Color back = Color.decode("0xffffbb");
+        Color back = Color.decode("0x74a9cc");
 
         vv2.setBackground(back);
 
